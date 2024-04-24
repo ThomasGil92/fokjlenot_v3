@@ -38,13 +38,7 @@ export const authHandlers = [
           token: {
             access_token: "access_token1234",
             refresh_token: "refresh_token1234",
-          },
-          user: {
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-            id: user.id,
-          },
+          }
         });
       } else {
         throw new SyntaxError(

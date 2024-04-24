@@ -8,7 +8,6 @@ import {
   ResponseResolverInfo,
 } from "node_modules/msw/lib/core/handlers/RequestHandler";
 import { HttpRequestResolverExtras } from "node_modules/msw/lib/core/handlers/HttpHandler";
-import { User } from "../../user/user";
 
 const token = (
   req: ResponseResolverInfo<
@@ -16,9 +15,9 @@ const token = (
     DefaultBodyType
   >,
 ) => {
-  return req.request.headers.get("Authorization") === "Bearer Token.1234";
+  return req.request.headers.get("Authorization") === "Bearer access_token1234";
 };
-const projects: Project[] = [
+let projects: Project[] = [
   {
     id: "1",
     title: "First Project",
@@ -44,27 +43,22 @@ const projects: Project[] = [
 
 const filteredByUserId = (
   projectArray: Project[],
-  userId: User["id"],
-  projectId?: Project["id"]|null,
+  projectId?: Project["id"] | null,
 ) => {
   const filteredProjects = projectArray.filter(
-    (project) => project.owner === userId,
+    (project) => project.owner === "1",
   );
-  if (projectId) return filteredProjects.filter((project) => project.id === projectId);
+  if (projectId)
+    return filteredProjects.filter((project) => project.id === projectId);
+
   return filteredProjects;
 };
 
 export const projectsHandlers = [
   http.get(`/api/projects`, async (req) => {
-    const url = new URL(req.request.url);
-
-    // Read the "id" URL query parameter using the "URLSearchParams" API.
-    // Given "/product?id=1", "productId" will equal "1".
-    const userId = url.searchParams.get("userId");
-
-    if (userId && token(req)) {
+    if (token(req)) {
       return HttpResponse.json({
-        projects_list: filteredByUserId(projects, userId),
+        projects_list: filteredByUserId(projects),
       });
     } else {
       //console.log(error)
@@ -81,12 +75,30 @@ export const projectsHandlers = [
 
     // Read the "id" URL query parameter using the "URLSearchParams" API.
     // Given "/product?id=1", "productId" will equal "1".
-    const userId = url.searchParams.get("userId");
     const projectId = url.searchParams.get("projectId");
 
-    if (userId && token(req)) {
+    if (token(req)) {
       return HttpResponse.json({
-        selected_project: filteredByUserId(projects, userId, projectId),
+        selected_project: filteredByUserId(projects, projectId),
+      });
+    } else {
+      //console.log(error)
+      return HttpResponse.json(
+        {
+          error: "Pas de token présent",
+        },
+        { status: 401 },
+      );
+    }
+  }),
+  http.post(`/api/project`, async (req) => {
+    const newProject = (await req.request.json()) as Project;
+
+    projects = [...projects, newProject];
+
+    if (token(req)) {
+      return HttpResponse.json({
+        projects_list: filteredByUserId(projects),
       });
     } else {
       //console.log(error)

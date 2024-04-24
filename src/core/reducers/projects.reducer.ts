@@ -2,6 +2,7 @@ import { AppState } from "@/infra/store/appState";
 import { createReducer } from "@reduxjs/toolkit";
 import { getProjectsListByUserId } from "../use-cases/projects/getProjectListByUserId";
 import { getProjectById } from "../use-cases/projects/getProjectById";
+import { postNewProject } from "../use-cases/projects/postNewProject";
 
 const initialState: AppState["projects"] = {
   list: [],
@@ -23,5 +24,11 @@ export const projectsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getProjectById.rejected, (_, action) => {
       return { ...initialState, error: action.error.message };
+    })
+    .addCase(postNewProject.rejected, (_, action) => {
+      return { ...initialState, error: action.error.message };
+    })
+    .addCase(postNewProject.fulfilled, (_, action) => {
+      return { ...initialState, list:action.payload };
     });
 });

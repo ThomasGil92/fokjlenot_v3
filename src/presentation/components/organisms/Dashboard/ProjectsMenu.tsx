@@ -10,10 +10,9 @@ import { getProjectsListByUserId } from "@/core/use-cases/projects/getProjectLis
 const ProjectsMenu = () => {
   const dispatch=useAppDispatch()
   const { list: projects, loading } = useAppSelector((state) => state.projects);
-const token=useAppSelector(state=>state.auth.access_token)
-const userId=useAppSelector(state=>state.auth.user!.id)
-  useEffect(() => {
-    dispatch(getProjectsListByUserId({userId,token}));
+const token=useAppSelector(state=>state.auth.access_token!)
+ useEffect(() => {
+    dispatch(getProjectsListByUserId({token}));
   }, []);
 
   return (

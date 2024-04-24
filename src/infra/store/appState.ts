@@ -4,20 +4,14 @@ import { Project } from "@/adapters/secondary/project/project";
 export interface AppState {
   auth: {
     isAuth: boolean;
-    access_token: string ;
-    refresh_token:string;
-    user?:{
-      email:string,
-      first_name:string,
-      last_name:string,
-      id:string,
-      password?:string
-    }
+    access_token: string | null;
+    refresh_token: string | null;
+    loading: boolean;
   };
   projects: {
     list: Project[];
     selected: Project | null;
-    loading: boolean;error:string|undefined
+    loading: boolean;
+    error: string | undefined;
   };
 }
-

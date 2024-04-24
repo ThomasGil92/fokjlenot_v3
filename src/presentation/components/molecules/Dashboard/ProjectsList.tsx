@@ -13,18 +13,23 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 //import { addProject } from "@/domain/usecases/projects/projectsUseCase";
-import { useAppSelector } from "@/infra/store/reduxStore";
+import { useAppDispatch, useAppSelector } from "@/infra/store/reduxStore";
 import SubmitButton from "../../atoms/shared/SubmitButton";
 import AddProjectFormFields from "./AddProjectFormFields";
 import { Form } from "@/presentation/shadcn/components/ui/form";
-import { ProjectStatus } from "@/adapters/secondary/project/project";
+import { Project, ProjectStatus } from "@/adapters/secondary/project/project";
+import { postNewProject } from "@/core/use-cases/projects/postNewProject";
+import { useState } from "react";
 
 interface ProjectListProp {
   projects: Project[];
 }
 
 const ProjectsList: React.FC<ProjectListProp> = ({ projects }) => {
-  const token = useAppSelector((state) => state.auth.access_token);
+  const dispatch=useAppDispatch()
+  const token = useAppSelector((state) => state.auth.access_token!);
+
+  const [open,setOpen]=useState(false)
 
   const formSchema = z.object({
     title: z
@@ -50,14 +55,14 @@ const ProjectsList: React.FC<ProjectListProp> = ({ projects }) => {
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     // e.preventDefault();
 
-    //addProject(values, token);
-
+    dispatch(postNewProject({ token,newProject:values}));
+setOpen(false)
     form.reset();
   };
 
   return (
     <CardContent>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button data-testid='addButton'>New project</Button>
         </DialogTrigger>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -9,13 +10,11 @@ const ProjectPage = () => {
   const dispatch=useAppDispatch()
   const project = useAppSelector((state) => state.projects.selected);
   const token = useAppSelector((state) => state.auth.access_token);
-  const userId = useAppSelector((state) => state.auth.user!.id);
-
-  //  const test=useLoaderData() as string
+  
   const params = useParams();
 
   useEffect(() => {
-    dispatch(getProjectById({userId, token:token,projectId:params.id!}));
+    dispatch(getProjectById({ token:token,projectId:params.id!}));
   }, []);
 
   return (

@@ -1,5 +1,4 @@
 import { Token } from "@/core/use-cases/auth/auth";
-import { User } from "../user/user";
 import { Project, ProjectRetriever } from "./project";
 
 export const projectsGateway = (projectRetriever: ProjectRetriever) => {
@@ -15,26 +14,22 @@ export const projectsGateway = (projectRetriever: ProjectRetriever) => {
   }; */
 
   return {
-    getProjectsByUserId: async (
-      userId: User["id"],
-      token: Token["access_token"] | null,
-    ) => {
-      const response = await projectRetriever.getProjectsListByUserId(
-        userId,
-        token,
-      );
+    getProjectsByUserId: async (token: Token["access_token"] | null) => {
+      const response = await projectRetriever.getProjectsListByUserId(token);
       return response;
     },
     getProjectById: async (
-      userId: User["id"],
       token: Token["access_token"] | null,
       projectId: Project["id"],
     ) => {
-      const response = await projectRetriever.getProjectById(
-        userId,
-        token,
-        projectId,
-      );
+      const response = await projectRetriever.getProjectById(token, projectId);
+      return response;
+    },
+    postNewProject: async (
+      token: Token["access_token"] | null,
+      newProject: Project,
+    ) => {
+      const response = await projectRetriever.postNewProject(token, newProject);
       return response;
     },
   };

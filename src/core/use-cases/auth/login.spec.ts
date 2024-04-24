@@ -25,6 +25,5 @@ describe("auth login gateway", () => {
     };
     await store.dispatch(login(userCredentials));
     expect(store.getState().auth.access_token).toBeTruthy();
-    expect(store.getState().auth.user?.email).toBeTruthy();
   });
 });
