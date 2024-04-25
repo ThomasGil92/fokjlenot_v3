@@ -49,7 +49,7 @@ const filteredByUserId = (
     (project) => project.owner === "1",
   );
   if (projectId)
-    return filteredProjects.filter((project) => project.id === projectId);
+    return filteredProjects.find((project) => project.id === projectId);
 
   return filteredProjects;
 };

@@ -1,4 +1,5 @@
 import { Project } from "@/adapters/secondary/project/project";
+import { Task } from "@/adapters/secondary/task/task";
 
 //Interface du state du store
 export interface AppState {
@@ -14,4 +15,5 @@ export interface AppState {
     loading: boolean;
     error: string | undefined;
   };
+  tasks: { list: Task[]; loading: boolean; error: string | undefined };
 }

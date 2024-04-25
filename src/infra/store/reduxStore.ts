@@ -3,6 +3,7 @@ import { Action, Store, ThunkAction, ThunkDispatch, configureStore } from "@redu
 import { AppState } from "./appState";
 import { authRetrievalReducer as auth } from "@/core/reducers/auth.reducer";
 import { projectsReducer  as projects} from "@/core/reducers/projects.reducer";
+import { tasksReducer  as tasks} from "@/core/reducers/tasks.reducer";
 import { useDispatch, useSelector } from "react-redux";
 export type Gateways = {
   authGateway: AuthGateway;
@@ -10,7 +11,7 @@ export type Gateways = {
 
 export const initReduxStore = (/* gateways?: Partial<Gateways> */) => {
   return configureStore({
-    reducer: {auth,projects},
+    reducer: {auth,projects,tasks},
     // middleware: (getDefaultMiddleware) =>
     //   getDefaultMiddleware({
     //     thunk: { extraArgument: gateways },

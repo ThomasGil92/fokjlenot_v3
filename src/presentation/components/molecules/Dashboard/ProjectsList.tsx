@@ -52,7 +52,7 @@ const ProjectsList: React.FC<ProjectListProp> = ({ projects }) => {
     },
   });
 
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     // e.preventDefault();
 
     dispatch(postNewProject({ token,newProject:values}));
@@ -73,7 +73,7 @@ setOpen(false)
           <Form {...form}>
           <form
             data-testid='addProjectForm'
-            onSubmit={form.handleSubmit(handleSubmit)}
+            onSubmit={form.handleSubmit(onSubmit)}
             className=''
           >
             <AddProjectFormFields form={form} />

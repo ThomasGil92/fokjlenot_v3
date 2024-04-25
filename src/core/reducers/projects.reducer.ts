@@ -20,7 +20,8 @@ export const projectsReducer = createReducer(initialState, (builder) => {
       return { ...initialState, error: action.error.message };
     })
     .addCase(getProjectById.fulfilled, (_, action) => {
-      return { ...initialState, selected: action.payload };
+      console.log("payloadd",action.payload)
+      return { ...initialState, selected: action.payload.project };
     })
     .addCase(getProjectById.rejected, (_, action) => {
       return { ...initialState, error: action.error.message };

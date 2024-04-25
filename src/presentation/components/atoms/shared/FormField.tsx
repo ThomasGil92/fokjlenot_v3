@@ -1,3 +1,4 @@
+import { ProjectStatus } from "@/adapters/secondary/project/project";
 import {
   FormControl,
   FormDescription,
@@ -7,49 +8,106 @@ import {
   FormMessage,
 } from "@/presentation/shadcn/components/ui/form";
 import { Input } from "@/presentation/shadcn/components/ui/input";
-import { Control } from "react-hook-form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/presentation/shadcn/components/ui/select";
+import { UseFormRegister } from "react-hook-form";
+
+export type ValidFieldNames = "title" | "status";
+export type FormData = {
+  title: string;
+  id: string;
+  status: ProjectStatus;
+  owner: string;
+  collaborators: string[];
+};
 interface FormFieldInterface {
   type: string;
-dataId:string;
-  name: string;
+  dataId: string;
+  name: ValidFieldNames;
   required: boolean;
   label: string;
+  options?: string[];
   placeholder: string;
-  control:Control<any>
-  description_helper?:string;
+  register: UseFormRegister<FormData>;
+  /* control: Control<
+    {
+      id: string;
+      name:string;
+      title: string;
+      status: ProjectStatus;
+      owner: string;
+      collaborators: string[];
+    },
+    ZodAny
+  >; */
+  description_helper?: string;
 }
 
 const FormFieldZ = ({
   type,
-  name,dataId,
+  register,
+  name,
+  dataId,
+  options,
   placeholder,
   label,
-  control,
+  //control,
   description_helper,
 }: FormFieldInterface) => {
   return (
     <>
       <FormField
         name={name}
-        control={control}
-        render={({ field }) => (
-          <FormItem className='mb-5'>
-            <FormLabel htmlFor={`#${name}`}>{label}</FormLabel>
-            <FormControl>
-              <Input
-                {...field}
-                type={type}
-                placeholder={placeholder}
-                id={name}
-                data-testid={dataId}
-              />
-            </FormControl>
-            {description_helper && (
-              <FormDescription>{description_helper}</FormDescription>
-            )}
-            <FormMessage />
-          </FormItem>
-        )}
+        //control={control}
+        render={({ field }) => {
+          return (
+            <FormItem className='mb-5'>
+              <FormLabel htmlFor={`#${name}`}>{label}</FormLabel>
+              <FormControl>
+                {!options ? (
+                  <Input
+                    {...field}
+                    {...register(name)}
+                    type={type}
+                    placeholder={placeholder}
+                    id={name}
+                    data-testid={dataId}
+                  />
+                ) : (
+                  <Select
+                    onValueChange={field.onChange}
+                    name={name}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className='w-[180px]'>
+                      <SelectValue placeholder='Choose a status' />
+                    </SelectTrigger>
+                    <SelectContent id={name}>
+                      {options.map((option, id) => (
+                        <SelectItem
+                          value={option.toLowerCase()}
+                          key={id + option}
+                          {...register(name)}
+                        >
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </FormControl>
+              {description_helper && (
+                <FormDescription>{description_helper}</FormDescription>
+              )}
+              <FormMessage />
+            </FormItem>
+          );
+        }}
       />
     </>
   );

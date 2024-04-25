@@ -29,7 +29,7 @@ describe("get projects list and store it", () => {
     expect(store.getState().projects.list).toStrictEqual([]);
   });
 
-  test("should get projects of a user with his Id and token", async () => {
+  test("should get projects of a user with token", async () => {
     localStorage.setItem("authToken", "access_token1234");
     store.dispatch(isAuth());
     await store.dispatch(
@@ -44,11 +44,11 @@ describe("get projects list and store it", () => {
     store.dispatch(isAuth());
     await store.dispatch(
       getProjectById({
-        token: store.getState().auth.access_token,
+        token: store.getState().auth.access_token!,
         projectId: "2",
       }),
     );
-    expect(store.getState().projects.selected).toHaveLength(1);
+    expect(store.getState().projects.selected).toBeDefined();
   });
 });
 describe("add project", () => {
