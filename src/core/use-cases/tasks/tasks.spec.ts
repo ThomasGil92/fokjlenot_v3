@@ -29,7 +29,6 @@ describe("get projects list and store it", () => {
         projectId: "2",
       }),
     );
-    console.log(store.getState())
     expect(store.getState().projects.selected).toBeDefined();
     // expect(store.getState().projects.selected?.id).toEqual("2");
     expect(store.getState().tasks.list).not.toBeUndefined()

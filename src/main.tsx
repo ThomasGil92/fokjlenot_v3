@@ -10,7 +10,7 @@ import "@/presentation/components/styles/globals.scss";
 //import { AuthGateway } from "./core/gateways/authGateways";
 const deferRender = async () => {
   if (import.meta.env.VITE_ENABLE_MSW === "false") {
-    console.log("helllo")
+    
     return;
   }
   const { browserWorker } = await import("@/adapters/secondary/msw/browser");

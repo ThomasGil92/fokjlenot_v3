@@ -9,12 +9,12 @@ import { useAppDispatch, useAppSelector } from "@/infra/store/reduxStore";
 const ProjectPage = () => {
   const dispatch=useAppDispatch()
   const project = useAppSelector((state) => state.projects.selected);
-  const token = useAppSelector((state) => state.auth.access_token);
+  const token = useAppSelector((state) => state.auth.access_token!);
   
   const params = useParams();
 
   useEffect(() => {
-    dispatch(getProjectById({ token:token,projectId:params.id!}));
+    dispatch(getProjectById({ token,projectId:params.id!}));
   }, []);
 
   return (

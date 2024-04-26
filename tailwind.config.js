@@ -9,6 +9,7 @@ export const content = [
   './src/**/*.{ts,tsx}',
 ];
 export const prefix = "";
+
 export const theme = {
   container: {
     center: true,
@@ -35,6 +36,18 @@ export const theme = {
       destructive: {
         DEFAULT: "hsl(var(--destructive))",
         foreground: "hsl(var(--destructive-foreground))",
+      },
+      done: {
+        DEFAULT: "hsl(var(--done))",
+        foreground: "hsl(var(--done-foreground))",
+      },
+      progress: {
+        DEFAULT: "hsl(var(--progress))",
+        foreground: "hsl(var(--progress-foreground))",
+      },
+      pending: {
+        DEFAULT: "hsl(var(--pending))",
+        foreground: "hsl(var(--pending-foreground))",
       },
       muted: {
         DEFAULT: "hsl(var(--muted))",

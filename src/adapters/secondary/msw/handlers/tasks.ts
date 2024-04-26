@@ -21,30 +21,37 @@ const token = (
 let tasks: Task[] = [
   {
     id: "1",
-    title: "First Project",
+    title: "First Task",
     status: TaskStatus.PENDING,
     projectId: "1",
     collaborators: [],
   },
   {
     id: "2",
-    title: "Second Project",
+    title: "Second Task",
     status: TaskStatus.DONE,
     projectId: "1",
     collaborators: [],
   },
   {
     id: "3",
-    title: "third Project",
+    title: "third Task",
     status: TaskStatus.DONE,
     projectId: "2",
     collaborators: [],
   },
   {
     id: "4",
-    title: "third Project",
+    title: "Fourth Task",
     status: TaskStatus.PROGRESS,
     projectId: "2",
+    collaborators: [],
+  },
+  {
+    id: "5",
+    title: "Fifth Task",
+    status: TaskStatus.PROGRESS,
+    projectId: "1",
     collaborators: [],
   },
 ];
