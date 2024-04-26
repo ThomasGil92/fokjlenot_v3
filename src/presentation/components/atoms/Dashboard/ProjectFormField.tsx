@@ -48,7 +48,7 @@ interface FormFieldInterface {
   description_helper?: string;
 }
 
-const FormFieldZ = ({
+const ProjectFormFieldZ = ({
   type,
   register,
   name,
@@ -113,4 +113,4 @@ const FormFieldZ = ({
   );
 };
 
-export default FormFieldZ;
+export default ProjectFormFieldZ;
