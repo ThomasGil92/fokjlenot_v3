@@ -1,5 +1,5 @@
 import { Token } from "@/core/use-cases/auth/auth";
-import { ProjectId, Task, tasksRetriever } from "./task";
+import { ProjectId, Task, TaskStatus, tasksRetriever } from "./task";
 
 export const tasksGateway = (tasksRetriever: tasksRetriever) => {
  
@@ -11,6 +11,14 @@ export const tasksGateway = (tasksRetriever: tasksRetriever) => {
     postNewTask: async (token: Token["access_token"],newTask:Task) => {
       const response = await tasksRetriever.postNewTask(token,newTask)
       console.log(response)
+      return response;
+    },
+    updateTaskStatus: async (token: Token["access_token"],taskId:Task["id"],newStatus:TaskStatus) => {
+      const response = await tasksRetriever.updateTaskStatus(
+        token,
+        taskId,
+        newStatus,
+      );
       return response;
     },
    

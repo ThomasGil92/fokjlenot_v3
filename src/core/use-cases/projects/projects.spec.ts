@@ -1,7 +1,4 @@
 import { ReduxStore, initReduxStore } from "@/infra/store/reduxStore";
-// import { authGateway as loginGateway } from "../../../adapters/secondary/auth/authGateway";
-// import { axiosLoginRetriever } from "../../../adapters/secondary/auth/axiosLoginRetriever";
-//import { AppState } from "@/infra/store/appState";
 import { getProjectsListByUserId } from "./getProjectListByUserId";
 import { worker } from "@/adapters/secondary/msw/server";
 import { isAuth } from "../auth/isAuth";

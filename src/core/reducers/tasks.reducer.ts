@@ -2,6 +2,7 @@ import { AppState } from "@/infra/store/appState";
 import { createReducer } from "@reduxjs/toolkit";
 import { getProjectById } from "../use-cases/projects/getProjectById";
 import { postNewTask } from "../use-cases/tasks/postNewTask";
+import { updateTaskStatus } from "../use-cases/tasks/updateTaskStatus";
 
 const initialState: AppState["tasks"] = {
   list: [],
@@ -20,6 +21,9 @@ export const tasksReducer = createReducer(initialState, (builder) => {
       return { ...initialState, error: action.error.message };
     })
     .addCase(postNewTask.fulfilled, (_, action) => {
+      return { ...initialState, list: action.payload };
+    })
+    .addCase(updateTaskStatus.fulfilled, (_, action) => {
       return { ...initialState, list: action.payload };
     });
     

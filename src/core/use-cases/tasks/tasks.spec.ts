@@ -5,7 +5,8 @@ import { isAuth } from "../auth/isAuth";
 import { getProjectById } from "../projects/getProjectById";
 import { Token } from "../auth/auth";
 import { postNewTask } from "./postNewTask";
-import { TaskStatus } from "@/adapters/secondary/task/task";
+import { Task, TaskStatus } from "@/adapters/secondary/task/task";
+import { updateTaskStatus } from "./updateTaskStatus";
 
 describe("tasks gestion", () => {
   let store: ReduxStore;
@@ -15,12 +16,9 @@ describe("tasks gestion", () => {
     localStorage.setItem("authToken", "access_token1234");
   });
   beforeEach(() => {
-    // const authRetriever = axiosLoginRetriever();
-    // const authGateway = loginGateway(authRetriever);
     store = initReduxStore();
     store.dispatch(isAuth());
     token = store.getState().auth.access_token!;
-    //initialState = store.getState();
   });
 
   test("should get all tasks with a project id", async () => {
@@ -31,7 +29,6 @@ describe("tasks gestion", () => {
       }),
     );
     expect(store.getState().projects.selected).toBeDefined();
-    // expect(store.getState().projects.selected?.id).toEqual("2");
     expect(store.getState().tasks.list).not.toBeUndefined();
   });
   test("should be able to add a task", async () => {
@@ -48,5 +45,18 @@ describe("tasks gestion", () => {
     expect(
       store.getState().tasks.list.filter((task) => task.id === "6"),
     ).toHaveLength(1);
+  });
+  test("should change status of a task", async () => {
+    const taskId: Task["id"] = "6";
+    const newStatus: TaskStatus = TaskStatus.DONE;
+    await store.dispatch(updateTaskStatus({ token, taskId, newStatus }));
+    console.log(store.getState().tasks.list);
+    expect(
+      store
+        .getState()
+        .tasks.list.find(
+          (task) => task.id === taskId && task.status === newStatus,
+        ),
+    ).toBeDefined();
   });
 });

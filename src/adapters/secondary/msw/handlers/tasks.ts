@@ -92,9 +92,33 @@ export const tasksHandlers = [
 
     tasks = [...tasks, newTask];
     if (token(req)) {
-      console.log(filteredByProjectId(tasks, newTask.projectId));
       return HttpResponse.json({
         new_task_list: filteredByProjectId(tasks, newTask.projectId),
+      });
+    } else {
+      //console.log(error)
+      return HttpResponse.json(
+        {
+          error: "Pas de token présent",
+        },
+        { status: 401 },
+      );
+    }
+  }),
+  http.patch(`/api/updateStatus`, async (req) => {
+    const { taskId, newStatus } = (await req.request.json()) as {
+      taskId: Task["id"];
+      newStatus: TaskStatus;
+    };
+    const taskToUpdateIndex = tasks.findIndex((task) => task.id === taskId);
+    if (taskToUpdateIndex !== -1) tasks[taskToUpdateIndex].status = newStatus;
+    console.log();
+    if (token(req)) {
+      return HttpResponse.json({
+        updated_task_list: filteredByProjectId(
+          tasks,
+          tasks[taskToUpdateIndex].projectId,
+        ),
       });
     } else {
       //console.log(error)
