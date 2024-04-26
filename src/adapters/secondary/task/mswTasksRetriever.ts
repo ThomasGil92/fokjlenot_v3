@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Token } from "@/core/use-cases/auth/auth";
-import { ProjectId, tasksRetriever } from "./task";
+import { ProjectId, Task, tasksRetriever } from "./task";
 
 export const mswTasksRetriever = (): tasksRetriever => {
   return {
@@ -22,6 +22,27 @@ export const mswTasksRetriever = (): tasksRetriever => {
         }
       }
     },
+    postNewTask: async (
+      token: Token["access_token"],
+      newTask: Task,
+    ) => {
+      try {
+        console.log("prout")
+        const response = await axios.post("/api/newTask", 
+           newTask ,
+          {headers: { Authorization: `Bearer ${token}` }},
+        );
+        console.log("msw res",response.data);
+        return response.data.new_task_list;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          //   console.log(error.response?.data.error);
+          throw new Error(error.response?.statusText);
+        }
+      }
+    },
+  }
     
-  };
+    
+  
 };

@@ -1,8 +1,5 @@
 import { HttpResponse, PathParams, http } from "msw";
-import {
-  Project,
-  ProjectStatus,
-} from "@/adapters/secondary/project/project.ts";
+import { Project } from "@/adapters/secondary/project/project.ts";
 import {
   DefaultBodyType,
   ResponseResolverInfo,
@@ -61,14 +58,13 @@ const filteredByProjectId = (
   projectId?: Project["id"] | null,
 ) => {
   const filteredProjects = taskArray.filter(
-    (task) => task.projectId===projectId,
+    (task) => task.projectId === projectId,
   );
-  
+
   return filteredProjects;
 };
 
 export const tasksHandlers = [
-  
   http.get(`/api/tasks`, async (req) => {
     const url = new URL(req.request.url);
 
@@ -90,5 +86,24 @@ export const tasksHandlers = [
       );
     }
   }),
-  
+  // Add a new task
+  http.post(`/api/newTask`, async (req) => {
+    const newTask = (await req.request.json()) as Task;
+
+    tasks = [...tasks, newTask];
+    if (token(req)) {
+      console.log(filteredByProjectId(tasks, newTask.projectId));
+      return HttpResponse.json({
+        new_task_list: filteredByProjectId(tasks, newTask.projectId),
+      });
+    } else {
+      //console.log(error)
+      return HttpResponse.json(
+        {
+          error: "Pas de token présent",
+        },
+        { status: 401 },
+      );
+    }
+  }),
 ];
