@@ -94,6 +94,8 @@ export const projectsHandlers = [
   http.post(`/api/project`, async (req) => {
     const newProject = (await req.request.json()) as Project;
 
+newProject.id=(projects.length+1).toString()
+
     projects = [...projects, newProject];
 
     if (token(req)) {
