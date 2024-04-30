@@ -5,7 +5,6 @@ import {
 } from "@/presentation/shadcn/components/ui/navigation-menu";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -20,18 +19,35 @@ import {
   Select,
   SelectContent,
   SelectItem,
-  SelectValue,SelectGroup, SelectTrigger 
+  SelectValue,
+  SelectGroup,
+  SelectTrigger,
 } from "@/presentation/shadcn/components/ui/select";
 import { z } from "zod";
 import { TaskStatus } from "@/adapters/secondary/task/task";
-import { useForm } from "react-hook-form";
+import {  useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "@/presentation/shadcn/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/presentation/shadcn/components/ui/form";
+import { useAppDispatch, useAppSelector } from "@/infra/store/reduxStore";
+import { postNewTask } from "@/core/use-cases/tasks/postNewTask";
+import { useState } from "react";
 
 const ProjectCardHeader = () => {
+  const [open,setOpen]=useState(false)
+  const dispatch = useAppDispatch();
+  const token = useAppSelector((state) => state.auth.access_token!);
+  const selected = useAppSelector((state) => state.projects.selected);
+
   const formSchema = z.object({
     title: z.string().min(1, { message: "This field has to be filled." }),
-    description: z.string(),
+    description: z.string().min(1),
     status: z.nativeEnum(TaskStatus),
   });
 
@@ -45,10 +61,11 @@ const ProjectCardHeader = () => {
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    // e.preventDefault();
-
-    /* await dispatch(login(values));
-  navigate("/dashboard"); */
+    
+    console.log("test");
+    const newTask = { ...values, projectId: selected?.id, collaborators: [] };
+    await dispatch(postNewTask({ token, newTask }));
+setOpen(false)
     form.reset();
   };
 
@@ -56,7 +73,7 @@ const ProjectCardHeader = () => {
     <CardHeader className='flex p-0'>
       <NavigationMenu className=' ms-auto'>
         <NavigationMenuList className='divide-x-4 space-x-0'>
-          <Sheet>
+          <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button
                 data-testid='addTask'
@@ -75,60 +92,100 @@ const ProjectCardHeader = () => {
 
               <Form {...form}>
                 <form
-                  data-testid='loginForm'
+                  data-testid='addTaskForm'
                   onSubmit={form.handleSubmit(handleSubmit)}
                   className='grid gap-4 py-4'
                 >
-                  <div className='grid grid-cols-4 items-center gap-4'>
-                    <Label htmlFor='title' className='text-right'>
-                      Title
-                    </Label>
-                    <Input
-                      name='title'
-                      value='New task'
-                      className='col-span-3'
-                      {...form.register("title")}
-                    />
-                  </div>
-                  <div className='grid grid-cols-4 items-center gap-4'>
-                    <Label htmlFor='description' className='text-right'>
-                      Description
-                    </Label>
-                    <Input
-                      id='description'
-                      name='description'
-                      value='Description of the task'
-                      className='col-span-3'
-                      {...form.register(name)}
-                    />
-                  </div>
-                  <div className='grid grid-cols-4 items-center gap-4'>
-                    <Select>
-                      <SelectTrigger className='w-[180px] border'>
-                        <SelectValue placeholder='Choose a status' />
-                      </SelectTrigger>
-                      <SelectContent id={"status"}>
-                        <SelectGroup>
-                          {Object.values(TaskStatus).map((option, id) => (
-                            <SelectItem
-                              value={option.toLowerCase()}
-                              key={id + option}
-                              {...form.register("status")}
+                  <FormField
+                  /*   control={form.control} */
+                    name={"title"}
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <div className='grid grid-cols-6 items-center gap-4'>
+                            <FormLabel htmlFor='title' className='text-right'>
+                              Title
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                type='text'
+                                id='title'
+                                className='col-start-2 col-span-4'
+                                {...field}
+                                {...form.register("title", { required: true })}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                  <FormField
+                    name={"description"}
+                    render={({ field }) => {
+                      return (
+                        <div className='grid grid-cols-6 items-center gap-4'>
+                          <Label htmlFor='description' className='text-right'>
+                            Description
+                          </Label>
+                          <Input
+                            {...field}
+                            id='description'
+                            className='col-start-2 col-span-4'
+                            {...form.register("description", {
+                              required: true,
+                            })}
+                          />
+                        </div>
+                      );
+                    }}
+                  />
+                  <FormField
+                    name='status'
+                    render={({ field }) => {
+                      return (
+                        <div className='grid grid-cols-6 items-center gap-4 text-right'>
+                          <Label htmlFor='status' className='text-right'>
+                            Status
+                          </Label>
+                          <FormControl>
+                            <Select
+                              defaultValue={field.value}
+                              onValueChange={field.onChange}
                             >
-                              {option}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                              <SelectTrigger className='col-start-2 col-span-4 border'>
+                                <SelectValue placeholder='Choose a status' />
+                              </SelectTrigger>
+                              <SelectContent id={"status"}>
+                                <SelectGroup>
+                                  {Object.values(TaskStatus).map(
+                                    (option, id) => (
+                                      <SelectItem
+                                        value={option.toLowerCase()}
+                                        key={id + option}
+                                        {...form.register("status")}
+                                      >
+                                        {option}
+                                      </SelectItem>
+                                    ),
+                                  )}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                        </div>
+                      );
+                    }}
+                  />
+
+                  <SheetFooter>
+                    {/* <SheetClose asChild> */}
+                      <Button type='submit'>Save your new task</Button>
+                    {/* </SheetClose> */}
+                  </SheetFooter>
                 </form>
               </Form>
-              <SheetFooter>
-                <SheetClose asChild>
-                  <Button type='submit'>Save your new task</Button>
-                </SheetClose>
-              </SheetFooter>
             </SheetContent>
           </Sheet>
         </NavigationMenuList>

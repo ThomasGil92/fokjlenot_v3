@@ -1,6 +1,9 @@
 import { UseFormReturn } from "react-hook-form";
-import FormFieldZ from "../../atoms/Dashboard/ProjectFormField";
 import { ProjectStatus } from "@/adapters/secondary/project/project";
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/shadcn/components/ui/form";
+import { Input } from "@/presentation/shadcn/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/presentation/shadcn/components/ui/select";
+import { TaskStatus } from "@/adapters/secondary/task/task";
 
 interface AddProjectFieldsInterface {
   form: UseFormReturn<
@@ -23,7 +26,32 @@ const AddProjectFormFields: React.FC<AddProjectFieldsInterface> = ({
   const { register } = form;
   return (
     <>
-      <FormFieldZ
+      <FormField
+        name={"title"}
+        //control={control}
+        render={({ field }) => {
+          return (
+            <FormItem className='mb-5'>
+              <FormLabel htmlFor={`#${field.name}`}>Title:</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  {...register(field.name)}
+                  type='text'
+                  placeholder='Title here'
+                  id={field.name}
+                  data-testid='titleInput'
+                />
+              </FormControl>
+
+              <FormDescription>My New Project</FormDescription>
+
+              <FormMessage />
+            </FormItem>
+          );
+        }}
+      />
+      {/* <FormFieldZ
         placeholder='Title here'
         description_helper='My New Project'
         label='Title:'
@@ -32,21 +60,47 @@ const AddProjectFormFields: React.FC<AddProjectFieldsInterface> = ({
         register={register}
         name='title'
         required
+      /> */}
+
+      <FormField
+        name="status"
+        //control={control}
+        render={({ field }) => {
+          return (
+            <FormItem className='mb-5'>
+              <FormLabel htmlFor={`#${field.name}`}>Status:</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  name={field.name}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger className='w-[180px]'>
+                    <SelectValue placeholder='Choose a status' />
+                  </SelectTrigger>
+                  <SelectContent >
+                    {Object.values(TaskStatus).map((option, id) => (
+                      <SelectItem
+                        value={option.toLowerCase()}
+                        key={id + option}
+                        {...register(field.name)}
+                      >
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+                <FormDescription>
+                  Select the status of the project
+                </FormDescription>
+              <FormMessage />
+            </FormItem>
+          );
+        }}
       />
 
-      <>
-        <FormFieldZ
-          placeholder='Select a status'
-          description_helper='Select the status of the project'
-          label='Status:'
-          dataId='statusInput'
-          type='select'
-          register={register}
-          options={["Done", "Pending", "Progress"]}
-          name='status'
-          required
-        />
-      </>
+     
     </>
   );
 };

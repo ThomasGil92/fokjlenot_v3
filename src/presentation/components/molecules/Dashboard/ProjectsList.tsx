@@ -53,7 +53,7 @@ const ProjectsList: React.FC<ProjectListProp> = ({ projects }) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // e.preventDefault();
+  
 
     dispatch(postNewProject({ token,newProject:values}));
 setOpen(false)

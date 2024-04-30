@@ -6,7 +6,7 @@ import { mswTasksRetriever } from "@/adapters/secondary/task/mswTasksRetriever";
 
 export const postNewTask = createAppAsyncThunk<
   Task[],
-  { token: Token["access_token"]; newTask: Task }
+  { token: Token["access_token"]; newTask: Partial<Task> }
 >("postNewtask", async ({ token, newTask }) => {
   const new_task_list = await tasksGateway(
     mswTasksRetriever(),

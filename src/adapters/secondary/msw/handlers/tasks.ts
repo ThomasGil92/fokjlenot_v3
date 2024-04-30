@@ -20,12 +20,16 @@ let tasks: Task[] = [
     id: "1",
     title: "First Task",
     status: TaskStatus.PENDING,
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet augue tincidunt, maximus ipsum eget, volutpat dui. Pellentesque posuere diam eget arcu aliquet venenatis.",
     projectId: "1",
     collaborators: [],
   },
   {
     id: "2",
     title: "Second Task",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet augue tincidunt, maximus ipsum eget, volutpat dui. Pellentesque posuere diam eget arcu aliquet venenatis.",
     status: TaskStatus.DONE,
     projectId: "1",
     collaborators: [],
@@ -33,12 +37,16 @@ let tasks: Task[] = [
   {
     id: "3",
     title: "third Task",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet augue tincidunt, maximus ipsum eget, volutpat dui. Pellentesque posuere diam eget arcu aliquet venenatis.",
     status: TaskStatus.DONE,
     projectId: "2",
     collaborators: [],
   },
   {
     id: "4",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet augue tincidunt, maximus ipsum eget, volutpat dui. Pellentesque posuere diam eget arcu aliquet venenatis.",
     title: "Fourth Task",
     status: TaskStatus.PROGRESS,
     projectId: "2",
@@ -46,6 +54,8 @@ let tasks: Task[] = [
   },
   {
     id: "5",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet augue tincidunt, maximus ipsum eget, volutpat dui. Pellentesque posuere diam eget arcu aliquet venenatis.",
     title: "Fifth Task",
     status: TaskStatus.PROGRESS,
     projectId: "1",
@@ -89,7 +99,7 @@ export const tasksHandlers = [
   // Add a new task
   http.post(`/api/newTask`, async (req) => {
     const newTask = (await req.request.json()) as Task;
-
+    newTask.id = (tasks.length + 1).toString();
     tasks = [...tasks, newTask];
     if (token(req)) {
       return HttpResponse.json({
