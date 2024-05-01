@@ -5,7 +5,6 @@ import PopoverButton from "../shared/PopoverButton";
 import { Button } from "@/presentation/shadcn/components/ui/button";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 import { useAppDispatch, useAppSelector } from "@/infra/store/reduxStore";
-import { updateTaskStatus } from "@/core/use-cases/tasks/updateTaskStatus";
 import { updateTask } from "@/core/use-cases/tasks/updateTask";
 interface DropResult {
   allowedDropEffect: string;
