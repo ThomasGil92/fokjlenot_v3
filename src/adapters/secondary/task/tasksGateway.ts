@@ -21,6 +21,13 @@ export const tasksGateway = (tasksRetriever: tasksRetriever) => {
       );
       return response;
     },
+    updateTask: async (token: Token["access_token"],updatedTask:Task) => {
+      const response = await tasksRetriever.updateTask(
+        token,
+        updatedTask,
+      );
+      return response;
+    },
    
   };
 };

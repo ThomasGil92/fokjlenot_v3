@@ -8,6 +8,12 @@ export enum TaskStatus {
   PROGRESS = "progress",
 }
 
+export enum TaskPriority{
+  HIGHT="hight",
+  MEDIUM="medium",
+  LOW="low",
+}
+
 export type ProjectId = Project["id"];
 
 export type Task = {
@@ -17,12 +23,14 @@ export type Task = {
   status: TaskStatus;
   projectId: ProjectId;
   collaborators: User["id"][];
+  priority?:TaskPriority
 };
 
 export interface tasksRetriever{
     getTasksByProjectId:(token:Token["access_token"],projectId:ProjectId)=> Promise<Task[]>
     postNewTask:(token:Token["access_token"],newTask:Partial<Task>)=> Promise<Task[]>
     updateTaskStatus:(token:Token["access_token"],taskId:Task["id"],newStatus:TaskStatus)=> Promise<Task[]>
+    updateTask:(token:Token["access_token"],updatedTask:Task)=> Promise<Task[]>
 }
 
 

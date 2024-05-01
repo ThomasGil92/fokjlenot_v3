@@ -24,7 +24,7 @@ export const mswTasksRetriever = (): tasksRetriever => {
     },
     postNewTask: async (
       token: Token["access_token"],
-      newTask: Task,
+      newTask: Partial<Task>,
     ) => {
       try {
         const response = await axios.post("/api/newTask", 
@@ -47,6 +47,24 @@ export const mswTasksRetriever = (): tasksRetriever => {
         const response = await axios.patch("/api/updateStatus", 
            {taskId,newStatus} ,
           {headers: { Authorization: `Bearer ${token}` }},
+        );
+        return response.data.updated_task_list;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          //   console.log(error.response?.data.error);
+          throw new Error(error.response?.statusText);
+        }
+      }
+    },
+    updateTask: async (
+      token: Token["access_token"],
+     updatedTask:Task
+    ) => {
+      try {
+        const response = await axios.put(
+          "/api/updateTask",
+          { updatedTask },
+          { headers: { Authorization: `Bearer ${token}` } },
         );
         return response.data.updated_task_list;
       } catch (error) {

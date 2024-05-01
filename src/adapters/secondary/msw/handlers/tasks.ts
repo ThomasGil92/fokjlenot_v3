@@ -5,7 +5,7 @@ import {
   ResponseResolverInfo,
 } from "node_modules/msw/lib/core/handlers/RequestHandler";
 import { HttpRequestResolverExtras } from "node_modules/msw/lib/core/handlers/HttpHandler";
-import { Task, TaskStatus } from "../../task/task";
+import { Task, TaskPriority, TaskStatus } from "../../task/task";
 
 const token = (
   req: ResponseResolverInfo<
@@ -24,6 +24,7 @@ let tasks: Task[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet augue tincidunt, maximus ipsum eget, volutpat dui. Pellentesque posuere diam eget arcu aliquet venenatis.",
     projectId: "1",
     collaborators: [],
+    priority: TaskPriority.MEDIUM,
   },
   {
     id: "2",
@@ -32,6 +33,7 @@ let tasks: Task[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet augue tincidunt, maximus ipsum eget, volutpat dui. Pellentesque posuere diam eget arcu aliquet venenatis.",
     status: TaskStatus.DONE,
     projectId: "1",
+    priority: TaskPriority.LOW,
     collaborators: [],
   },
   {
@@ -59,6 +61,7 @@ let tasks: Task[] = [
     title: "Fifth Task",
     status: TaskStatus.PROGRESS,
     projectId: "1",
+    priority: TaskPriority.HIGHT,
     collaborators: [],
   },
 ];
@@ -123,6 +126,27 @@ export const tasksHandlers = [
     const taskToUpdateIndex = tasks.findIndex((task) => task.id === taskId);
     if (taskToUpdateIndex !== -1) tasks[taskToUpdateIndex].status = newStatus;
     console.log();
+    if (token(req)) {
+      return HttpResponse.json({
+        updated_task_list: filteredByProjectId(
+          tasks,
+          tasks[taskToUpdateIndex].projectId,
+        ),
+      });
+    } else {
+      //console.log(error)
+      return HttpResponse.json(
+        {
+          error: "Pas de token présent",
+        },
+        { status: 401 },
+      );
+    }
+  }),
+  http.put(`/api/updateTask`, async (req) => {
+    const  {updatedTask}  = (await req.request.json()) as {updatedTask:Task}
+    const taskToUpdateIndex = tasks.findIndex((task) => task.id === updatedTask.id);
+    if (taskToUpdateIndex !== -1) tasks[taskToUpdateIndex] = updatedTask;
     if (token(req)) {
       return HttpResponse.json({
         updated_task_list: filteredByProjectId(

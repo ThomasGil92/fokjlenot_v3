@@ -6,12 +6,13 @@ import { Button } from "@/presentation/shadcn/components/ui/button";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 import { useAppDispatch, useAppSelector } from "@/infra/store/reduxStore";
 import { updateTaskStatus } from "@/core/use-cases/tasks/updateTaskStatus";
+import { updateTask } from "@/core/use-cases/tasks/updateTask";
 interface DropResult {
   allowedDropEffect: string;
   dropEffect: string;
   name: string;
 }
-const TaskItem = ({ task }: { task: Task }) => {
+const TaskItem = ({ task }: { task: Task}) => {
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.auth.access_token!);
   const getVariantColor = (status: Task["status"]) => {
@@ -26,13 +27,10 @@ const TaskItem = ({ task }: { task: Task }) => {
       item: task,
       end(item, monitor) {
         const dropResult = monitor.getDropResult() as DropResult;
-        //Do something with item
-        console.log(dropResult.name);
         dispatch(
-          updateTaskStatus({
+          updateTask({
             token,
-            taskId: item.id,
-            newStatus: dropResult.name as TaskStatus,
+            updatedTask: { ...item, status: dropResult.name as TaskStatus },
           }),
         );
       },

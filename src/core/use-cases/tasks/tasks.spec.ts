@@ -5,8 +5,9 @@ import { isAuth } from "../auth/isAuth";
 import { getProjectById } from "../projects/getProjectById";
 import { Token } from "../auth/auth";
 import { postNewTask } from "./postNewTask";
-import { Task, TaskStatus } from "@/adapters/secondary/task/task";
+import { Task, TaskPriority, TaskStatus } from "@/adapters/secondary/task/task";
 import { updateTaskStatus } from "./updateTaskStatus";
+import { updateTask } from "./updateTask";
 
 describe("tasks gestion", () => {
   let store: ReduxStore;
@@ -41,7 +42,6 @@ describe("tasks gestion", () => {
     };
 
     await store.dispatch(postNewTask({ token, newTask }));
-    console.log(store.getState().tasks.list);
     expect(
       store.getState().tasks.list.filter((task) => task.id === "6"),
     ).toHaveLength(1);
@@ -50,7 +50,6 @@ describe("tasks gestion", () => {
     const taskId: Task["id"] = "6";
     const newStatus: TaskStatus = TaskStatus.DONE;
     await store.dispatch(updateTaskStatus({ token, taskId, newStatus }));
-    console.log(store.getState().tasks.list);
     expect(
       store
         .getState()
@@ -58,5 +57,34 @@ describe("tasks gestion", () => {
           (task) => task.id === taskId && task.status === newStatus,
         ),
     ).toBeDefined();
+  });
+  test("should update any field of a task", async () => {
+    const newTask: Task = {
+      id: "7",
+      title: "Seventh task",
+      description:"Bla bla",
+      status: TaskStatus.PROGRESS,
+      projectId: "1",
+      collaborators: [],
+      priority: undefined,
+    };
+
+    await store.dispatch(postNewTask({ token, newTask }));
+
+    const expectedTask=()=>{
+      return store.getState().tasks.list.filter((task) => task.id === "7");
+    }
+
+    expect(
+      expectedTask(),
+    ).toHaveLength(1);
+    const updatedTask = {
+      ...newTask,
+      status: TaskStatus.PENDING,
+      priority: TaskPriority.HIGHT,
+    };
+    await store.dispatch(updateTask({ token, updatedTask }));
+    expect(expectedTask()[0].status).toEqual(TaskStatus.PENDING);
+    expect(expectedTask()[0].priority).toEqual(TaskPriority.HIGHT);
   });
 });
