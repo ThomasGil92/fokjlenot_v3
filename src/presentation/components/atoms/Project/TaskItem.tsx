@@ -1,4 +1,4 @@
-import { Task, TaskStatus } from "@/adapters/secondary/task/task";
+import { Task, TaskPriority, TaskStatus } from "@/adapters/secondary/task/task";
 import { Badge } from "@/presentation/shadcn/components/ui/badge";
 import { Separator } from "@radix-ui/react-select";
 import PopoverButton from "../shared/PopoverButton";
@@ -11,13 +11,20 @@ interface DropResult {
   dropEffect: string;
   name: string;
 }
-const TaskItem = ({ task }: { task: Task}) => {
+const TaskItem = ({ task }: { task: Task }) => {
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.auth.access_token!);
-  const getVariantColor = (status: Task["status"]) => {
-    if (status === TaskStatus.PENDING) return "pending";
-    if (status === TaskStatus.DONE) return "done";
-    if (status === TaskStatus.PROGRESS) return "progress";
+
+  // const getVariantColor = (status: Task["status"]) => {
+  //   if (status === TaskStatus.PENDING) return "pending";
+  //   if (status === TaskStatus.DONE) return "done";
+  //   if (status === TaskStatus.PROGRESS) return "progress";
+  // };
+  const getPriorityVariantColor = (priority: Task["priority"]) => {
+    if (priority === undefined) return null;
+    if (priority === TaskPriority.LOW) return "low";
+    if (priority === TaskPriority.MEDIUM) return "medium";
+    if (priority === TaskPriority.HIGHT) return "hight";
   };
 
   const [{ opacity }, drag] = useDrag(
@@ -45,16 +52,34 @@ const TaskItem = ({ task }: { task: Task}) => {
     <>
       <div ref={drag} className='w-full p-3' style={{ opacity }}>
         <h3 className='text-lg font-bold'>{task.title}</h3>
-        <PopoverButton task={task}>
-          <Button variant={"ghost"} className={`p-0 m-0 hover:bg-transparent`}>
-            <Badge
-              variant={getVariantColor(task.status)}
-              className={` hover:bg-${task.status}`}
+        <div className='flex justify-end'>
+         {/*  <PopoverButton task={task}>
+            <Button
+              variant={"ghost"}
+              className={`p-0 m-0 hover:bg-transparent`}
             >
-              {task.status}
-            </Badge>
-          </Button>
-        </PopoverButton>
+              <Badge
+                variant={getVariantColor(task.status)}
+                className={` hover:bg-${task.status}/80`}
+              >
+                {task.status}
+              </Badge>
+            </Button>
+          </PopoverButton> */}
+          <PopoverButton task={task}>
+            <Button
+              variant={"ghost"}
+              className={`p-0 m-0 hover:bg-transparent`}
+            >
+              {task.priority !== undefined && (
+                <Badge
+                  variant={getPriorityVariantColor(task.priority)}
+                  className={`p-0 m-0 h-4 w-4`}
+                />
+              )}
+            </Button>
+          </PopoverButton>
+        </div>
       </div>
       <Separator />
     </>

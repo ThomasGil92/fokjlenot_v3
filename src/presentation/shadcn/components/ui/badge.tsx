@@ -17,6 +17,11 @@ const badgeVariants = cva(
         done: "border-transparent bg-done text-done-foreground hover:bg-done/80",
         pending:
           "border-transparent bg-pending text-pending-foreground hover:bg-pending/80",
+        low:
+          "border-transparent bg-low text-low-foreground hover:bg-low/80",
+        medium: "border-transparent bg-medium text-medium-foreground hover:bg-medium/80",
+        hight:
+          "border-transparent bg-hight text-hight-foreground hover:bg-hight/80",
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",

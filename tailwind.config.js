@@ -49,6 +49,18 @@ export const theme = {
         DEFAULT: "hsl(var(--pending))",
         foreground: "hsl(var(--pending-foreground))",
       },
+      low: {
+        DEFAULT: "hsl(var(--low))",
+        foreground: "hsl(var(--low-foreground))",
+      },
+      medium: {
+        DEFAULT: "hsl(var(--medium))",
+        foreground: "hsl(var(--medium-foreground))",
+      },
+      hight: {
+        DEFAULT: "hsl(var(--hight))",
+        foreground: "hsl(var(--hight-foreground))",
+      },
       muted: {
         DEFAULT: "hsl(var(--muted))",
         foreground: "hsl(var(--muted-foreground))",

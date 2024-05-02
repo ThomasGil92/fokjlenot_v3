@@ -7,33 +7,38 @@ interface StatusTaskColumnProps {
   status: TaskStatus;
 }
 
-const StatusTaskColumn = ({
-  tasks,
-  status,
-  
-}: StatusTaskColumnProps) => {
-    const [{ canDrop, isOver,hovered }, drop] = useDrop(
-      () => ({
-        accept: "task",
-        drop: () => ({
-          name: `${status}`,
-        }),
-        collect: (monitor: DropTargetMonitor) => ({
-          hovered: monitor.isOver()?"red":"blue",
-          canDrop: monitor.canDrop(),
-        }),
+const StatusTaskColumn = ({ tasks, status }: StatusTaskColumnProps) => {
+  const [{ canDrop, isOver }, drop] = useDrop(
+    () => ({
+      accept: "task",
+      drop: () => ({
+        name: `${status}`,
       }),
-      [],
-    );
+      collect: (monitor: DropTargetMonitor) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+      }),
+    }),
+    [],
+  );
+  function selectBackgroundColor(isActive: boolean) {
+    if (isActive) {
+      return "#a5f3fc";
+    }
+  }
+  const isActive = canDrop && isOver;
+  //const backgroundColor = selectBackgroundColor(isActive, canDrop);
+
   return (
-    <div ref={drop} className='col-span-4 md:grid-cols-12 border' style={{hovered}}>
-      <div className='border-b py-3 text-center'>
+    <div ref={drop} className='col-span-4 md:grid-cols-12 border'style={{ backgroundColor: selectBackgroundColor(isActive) }}>
+      <div className='border-b py-3 text-center bg-white'>
         <h3 className='text-xl'>{status[0].toUpperCase() + status.slice(1)}</h3>
       </div>
-      {tasks &&
-        tasks.map((task, id) => {
-          return <TaskItem key={task.title + id} task={task} />;
-        })}
+      
+        {tasks &&
+          tasks.map((task, id) => {
+            return <TaskItem key={task.title + id} task={task} />;
+          })}
     </div>
   );
 };

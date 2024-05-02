@@ -22,9 +22,16 @@
     --pending: 356 89% 52%;
     --pending-foreground: 0 0% 100%;
     --progress: 198 87% 52%;
-    --progress-foreground:0 0% 100%;
+    --progress-foreground: 0 0% 100%;
     --done: 148 84% 48%;
     --done-foreground: 222.2 84% 4.9%;
+
+    --low: 198 87% 52%;
+    --low-foreground:0 0% 100%;
+    --medium: 30 91% 52%;
+    --medium-foreground: 0 0% 100%;
+    --hight: 356 89% 52%;
+    --hight-foreground:  0 0% 100%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -58,13 +65,19 @@
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
 
-
---pending: 356 91% 95%;
+    --pending: 356 91% 95%;
     --pending-foreground: 210 40% 98%;
     --progress: 198 89% 94%;
     --progress-foreground: 210 40% 98%;
     --done: 148 91% 88%;
     --done-foreground: 210 40% 98%;
+
+    --low: 198 87% 52%;
+    --low-foreground:0 0% 100%;
+    --medium: 30 91% 52%;
+    --medium-foreground: 0 0% 100%;
+    --hight: 356 89% 52%;
+    --hight-foreground:  0 0% 100%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;

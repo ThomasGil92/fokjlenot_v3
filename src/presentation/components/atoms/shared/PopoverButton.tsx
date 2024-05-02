@@ -1,7 +1,10 @@
-import { Task, TaskStatus } from "@/adapters/secondary/task/task";
-import { updateTaskStatus } from "@/core/use-cases/tasks/updateTaskStatus";
+import { Task, TaskPriority } from "@/adapters/secondary/task/task";
 import { useAppDispatch, useAppSelector } from "@/infra/store/reduxStore";
-import { Form, FormField } from "@/presentation/shadcn/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+} from "@/presentation/shadcn/components/ui/form";
 import { Label } from "@/presentation/shadcn/components/ui/label";
 import {
   Popover,
@@ -17,6 +20,7 @@ import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import SubmitButton from "./SubmitButton";
+import { updateTask } from "@/core/use-cases/tasks/updateTask";
 
 const PopoverButton = ({
   children,
@@ -31,17 +35,21 @@ const PopoverButton = ({
   const dispatch = useAppDispatch();
 
   const formSchema = z.object({
-    status: z.nativeEnum(TaskStatus),
+    priority: z.nativeEnum(TaskPriority),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { status: task.status },
+    defaultValues: { priority: task.priority },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    console.log(values.priority);
     dispatch(
-      updateTaskStatus({ token, taskId: task.id, newStatus: values.status }),
+      updateTask({
+        token,
+        updatedTask: { ...task, priority: values.priority },
+      }),
     );
     setOpen(false);
   };
@@ -52,9 +60,9 @@ const PopoverButton = ({
       <PopoverContent className='w-40'>
         <div className='grid gap-4'>
           <div className='space-y-2'>
-            <h4 className='font-medium leading-none'>Status</h4>
+            <h4 className='font-medium leading-none'>Priority</h4>
             <p className='text-sm text-muted-foreground'>
-              Change the status of this task.
+              Change the priority of this task.
             </p>
           </div>
           <Form {...form}>
@@ -64,43 +72,54 @@ const PopoverButton = ({
               className=''
             >
               <FormField
-                name='status'
+                name='priority'
                 render={({ field }) => {
+                  console.log(field);
                   return (
                     <RadioGroup
-                      defaultValue={task.status}
+                      defaultValue={task.priority}
                       onValueChange={field.onChange}
-                      name='status'
+                      name='priority'
                     >
                       <div className='flex items-center space-x-2'>
-                        <RadioGroupItem
-                          value='pending'
-                          id='r1'
-                          {...form.register("status")}
-                        />
-                        <Label htmlFor='r1'>Pending</Label>
+                        <FormControl>
+                          <RadioGroupItem
+                            value={TaskPriority.LOW}
+                            id='low'
+                            {...form.register("priority")}
+                          />
+                        </FormControl>
+                        <Label htmlFor='low'>Low</Label>
                       </div>
                       <div className='flex items-center space-x-2'>
-                        <RadioGroupItem
-                          value='progress'
-                          id='r2'
-                          {...form.register("status")}
-                        />
-                        <Label htmlFor='r2'>Progress</Label>
+                        <FormControl>
+                          <RadioGroupItem
+                            value={TaskPriority.MEDIUM}
+                            id='medium'
+                            {...form.register("priority")}
+                          />
+                        </FormControl>
+                        <Label htmlFor='medium'>Medium</Label>
                       </div>
                       <div className='flex items-center space-x-2'>
-                        <RadioGroupItem
-                          value='done'
-                          id='r3'
-                          {...form.register("status")}
-                        />
-                        <Label htmlFor='r3'>Done</Label>
+                        <FormControl>
+                          
+                          <RadioGroupItem
+                            value={TaskPriority.HIGHT}
+                            id='hight'
+                            {...form.register("priority")}
+                          />
+                        </FormControl>
+                        <Label htmlFor='hight'>Hight</Label>
                       </div>
                     </RadioGroup>
                   );
                 }}
               />
-              <SubmitButton text='Save status' testId='updateStatusButton' />
+              <SubmitButton
+                text='Save priority'
+                testId='updatePriorityButton'
+              />
             </form>
           </Form>
         </div>
