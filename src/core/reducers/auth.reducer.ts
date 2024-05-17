@@ -7,30 +7,35 @@ import { logout } from "../use-cases/auth/logout";
 const initialState: AppState["auth"] = {
   isAuth: false,
   access_token: null,
-  refresh_token: null,
   loading: true,
+  user: null,
 };
 
 export const authRetrievalReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(isAuth, (_, action) => {
+    .addCase(isAuth.fulfilled, (_, action) => {
       return {
         ...initialState,
         isAuth: action.payload.isAuth,
-        access_token: action.payload.token,
+        user: {
+          email: action.payload.email,
+          id: action.payload.id,
+          first_name: "",
+          last_name: "",
+        },
+        access_token:action.payload.token,
         loading: false,
       };
     })
     .addCase(login.fulfilled, (state, action) => {
-      localStorage.setItem("authToken", action.payload.token.access_token);
-      state.access_token = action.payload.token.access_token;
-      state.refresh_token = action.payload.token.refresh_token;
+      localStorage.setItem("authToken", action.payload.token as string);
+      state.access_token = action.payload.token as string;
       state.isAuth = true;
+      state.user = action.payload.user;
     })
     .addCase(logout, (state) => {
       localStorage.removeItem("authToken");
       state.isAuth = false;
       state.access_token = null;
-      state.refresh_token = null;
     });
 });

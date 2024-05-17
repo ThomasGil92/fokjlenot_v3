@@ -7,16 +7,21 @@ import { ProjectStatus } from "@/adapters/secondary/project/project";
 const ProjectStatusChart = () => {
   const ref = useRef();
   const projects = useAppSelector((state) => state.projects.list);
-
   const projectsStatusData = () => {
+    console.log(projects)
     const pendingProjects = projects.filter(
-      (project) => project.status === ProjectStatus.PENDING,
+      (project) => project.status === ProjectStatus.PENDING.toUpperCase(),
     );
     const progressProject = projects.filter(
-      (project) => project.status === ProjectStatus.PROGRESS,
+      (project) => project.status === ProjectStatus.PROGRESS.toUpperCase(),
     );
     const doneProjects = projects.filter(
-      (project) => project.status === ProjectStatus.DONE,
+      (project) => project.status === ProjectStatus.DONE.toUpperCase(),
+    );
+    console.log(
+      pendingProjects.length,
+      progressProject.length,
+      doneProjects.length,
     );
     return [
       pendingProjects.length,
@@ -24,6 +29,8 @@ const ProjectStatusChart = () => {
       doneProjects.length,
     ];
   };
+
+  
 
   return (
     <div data-testid='projectStatusChart'>
@@ -34,10 +41,9 @@ const ProjectStatusChart = () => {
           labels: ["Pending", "Progress", "Done"],
           datasets: [
             {
-              
               data: projectsStatusData(),
               backgroundColor: ["#F41524", "#19ACF0", "#14E174"],
-              borderWidth: 0,
+              borderWidth: 2,borderColor:"black",
             },
           ],
         }}

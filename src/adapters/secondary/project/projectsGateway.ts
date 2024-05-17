@@ -1,5 +1,5 @@
 import { Token } from "@/core/use-cases/auth/auth";
-import { Project, ProjectRetriever } from "./project";
+import { Project, ProjectRetriever, UserId } from "./project";
 
 export const projectsGateway = (projectRetriever: ProjectRetriever) => {
   /* const filteredProjectsById = (
@@ -14,8 +14,14 @@ export const projectsGateway = (projectRetriever: ProjectRetriever) => {
   }; */
 
   return {
-    getProjectsByUserId: async (token: Token["access_token"] | null) => {
-      const response = await projectRetriever.getProjectsListByUserId(token);
+    getProjectsByUserId: async (
+      token: Token["access_token"] | null,
+      userId: UserId,
+    ) => {
+      const response = await projectRetriever.getProjectsListByUserId(
+        token,
+        userId,
+      );
       return response;
     },
     getProjectById: async (

@@ -20,6 +20,7 @@ export type Project = {
 export interface ProjectRetriever {
   getProjectsListByUserId: (
     token: Token["access_token"] | null,
+    userId: UserId,
   ) => Promise<Project[]>;
   getProjectById: (
     token: Token["access_token"] | null,

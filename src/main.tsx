@@ -9,10 +9,10 @@ import "@/presentation/components/styles/globals.scss";
 // import { stubAuthTokenRetriever } from "./adapters/secondary/auth/stubAuthTokenRetriever";
 //import { AuthGateway } from "./core/gateways/authGateways";
 const deferRender = async () => {
-  if (import.meta.env.VITE_ENABLE_MSW === "false") {
-    
+  if (import.meta.env.VITE_ENABLE_MSW === "false" || undefined) {
     return;
   }
+  console.log("merde");
   const { browserWorker } = await import("@/adapters/secondary/msw/browser");
   return browserWorker.start();
 };
@@ -22,11 +22,11 @@ const deferRender = async () => {
 const store = initReduxStore(/* { authGateway } */);
 
 deferRender().then(() => {
-createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <RouteProvider />
-    </Provider>
-  </React.StrictMode>,
-);
+  createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <RouteProvider />
+      </Provider>
+    </React.StrictMode>,
+  );
 });

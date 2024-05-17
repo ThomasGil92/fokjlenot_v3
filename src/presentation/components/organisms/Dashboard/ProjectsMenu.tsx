@@ -8,11 +8,12 @@ import { useAppDispatch, useAppSelector } from "@/infra/store/reduxStore";
 import { getProjectsListByUserId } from "@/core/use-cases/projects/getProjectListByUserId";
 
 const ProjectsMenu = () => {
-  const dispatch=useAppDispatch()
+  const dispatch = useAppDispatch();
   const { list: projects, loading } = useAppSelector((state) => state.projects);
-const token=useAppSelector(state=>state.auth.access_token!)
- useEffect(() => {
-    dispatch(getProjectsListByUserId({token}));
+  const token = useAppSelector((state) => state.auth.access_token!);
+  const userId = useAppSelector((state) => state.auth.user!.id);
+  useEffect(() => {
+    dispatch(getProjectsListByUserId({ token, userId }));
   }, []);
 
   return (

@@ -1,15 +1,14 @@
 //import NavigationTopBar from "@/presentation/components/organisms/NavigationTopBar";
 
 import { isAuth } from "@/core/use-cases/auth/isAuth";
-import { useAppSelector } from "@/infra/store/reduxStore";
+import { useAppDispatch, useAppSelector } from "@/infra/store/reduxStore";
 import NavigationTopBar from "@/presentation/components/organisms/Layout/NavigationTopBar";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 
 import { Outlet } from "react-router-dom";
 
 const Layout = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isLogged=useAppSelector(state=>state.auth.isAuth)
   useEffect(() => {
     dispatch(isAuth());

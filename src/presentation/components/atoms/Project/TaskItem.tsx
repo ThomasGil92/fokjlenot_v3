@@ -53,19 +53,6 @@ const TaskItem = ({ task }: { task: Task }) => {
       <div ref={drag} className='w-full p-3' style={{ opacity }}>
         <h3 className='text-lg font-bold'>{task.title}</h3>
         <div className='flex justify-end'>
-         {/*  <PopoverButton task={task}>
-            <Button
-              variant={"ghost"}
-              className={`p-0 m-0 hover:bg-transparent`}
-            >
-              <Badge
-                variant={getVariantColor(task.status)}
-                className={` hover:bg-${task.status}/80`}
-              >
-                {task.status}
-              </Badge>
-            </Button>
-          </PopoverButton> */}
           <PopoverButton task={task}>
             <Button
               variant={"ghost"}
