@@ -1,0 +1,77 @@
+import axios from "axios";
+import { Token } from "@/core/use-cases/auth/auth";
+import { ProjectId, Task, TaskStatus, tasksRetriever } from "./task";
+
+export const dbTasksRetriever = (): tasksRetriever => {
+  return {
+    getTasksByProjectId: async (
+      token: Token["access_token"],
+      projectId: ProjectId,
+    ) => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/task/tasks/${projectId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          //   console.log(error.response?.data.error);
+          throw new Error(error.response?.statusText);
+        }
+      }
+    },
+    postNewTask: async (
+      token: Token["access_token"],
+      newTask: Partial<Task>,
+    ) => {
+      try {
+        const response = await axios.post("/api/newTask", newTask, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        return response.data.new_task_list;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          //   console.log(error.response?.data.error);
+          throw new Error(error.response?.statusText);
+        }
+      }
+    },
+    updateTaskStatus: async (
+      token: Token["access_token"],
+      taskId: Task["id"],
+      newStatus: TaskStatus,
+    ) => {
+      try {
+        const response = await axios.patch(
+          "/api/updateStatus",
+          { taskId, newStatus },
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
+        return response.data.updated_task_list;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          //   console.log(error.response?.data.error);
+          throw new Error(error.response?.statusText);
+        }
+      }
+    },
+    updateTask: async (token: Token["access_token"], updatedTask: Task) => {
+      try {
+        const response = await axios.put(
+          "/api/updateTask",
+          { updatedTask },
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
+        return response.data.updated_task_list;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          //   console.log(error.response?.data.error);
+          throw new Error(error.response?.statusText);
+        }
+      }
+    },
+  };
+};

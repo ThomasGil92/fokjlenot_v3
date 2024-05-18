@@ -12,7 +12,6 @@ const deferRender = async () => {
   if (import.meta.env.VITE_ENABLE_MSW === "false" || undefined) {
     return;
   }
-  console.log("merde");
   const { browserWorker } = await import("@/adapters/secondary/msw/browser");
   return browserWorker.start();
 };
