@@ -28,7 +28,7 @@ const ActionButton = ({
   };
   return (
     <Button
-      variant='secondary'
+      
       className={className}
       onClick={handleClick}
       data-testid={testId}

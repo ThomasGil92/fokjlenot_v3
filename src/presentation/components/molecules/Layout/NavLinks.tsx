@@ -1,40 +1,107 @@
 import ActionButton from "@/presentation/components/atoms/shared/ActionButton";
-import { NavigationMenuList } from "@/presentation/shadcn/components/ui/navigation-menu";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/presentation/shadcn/components/ui/navigation-menu";
 import NavigationButton from "@/presentation/components/atoms/shared/NavigationButton";
 import { useAppDispatch, useAppSelector } from "@/infra/store/reduxStore";
 import { logout } from "@/core/use-cases/auth/logout";
+import BurgerMenu from "../../atoms/Layout/burgerMenu";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+} from "@/presentation/shadcn/components/ui/dropdown-menu";
+import { Button } from "@/presentation/shadcn/components/ui/button";
+import { NavLink } from "react-router-dom";
+import { useState } from "react";
 
 const NavLinks = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector((state) => state.auth.isAuth);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
   };
+
   return (
-    <NavigationMenuList>
-      {" "}
-      {isAuth ? (
-        <>
-          <ActionButton
-            textContent='Projects'
-            testId='toProjectsButton'
-            to='/dashboard'
-          />
-          <ActionButton
-            action={handleLogout}
-            textContent='Log Out'
-            testId='logoutButton'
-            to='/'
-          />
-        </>
-      ) : (
-        <>
-          <NavigationButton path='/signup' textContent='Sign Up' />
-          <NavigationButton path='/login' textContent='Log In' />
-        </>
-      )}
-    </NavigationMenuList>
+    <>
+      <div className='hidden md:block'>
+        <NavigationMenuList>
+          {isAuth ? (
+            <>
+              <ActionButton
+                textContent='Projects'
+                testId='toProjectsButton'
+                to='/dashboard'
+              />
+              <ActionButton
+                action={handleLogout}
+                textContent='Log Out'
+                testId='logoutButton'
+                to='/'
+              />
+            </>
+          ) : (
+            <>
+              <NavigationButton path='/signup' textContent='Sign Up' />
+              <NavigationButton path='/login' textContent='Log In' />
+            </>
+          )}
+        </NavigationMenuList>
+      </div>
+      {/* Mobile */}
+      <div className='block md:hidden relative z-50'>
+        {isAuth ? (
+          <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+            <DropdownMenuTrigger asChild>
+              <BurgerMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className='w-screen h-screen border-none rounded-none bg-foreground'>
+              <NavigationMenu className='w-full rounded-t-none bg-secondary border-2 flex justify-end z-40'>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <Button asChild variant={"link"} onClick={handleLogout}>
+                      <NavLink to='/login' reloadDocument>
+                        Log Out
+                      </NavLink>
+                    </Button>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+            <DropdownMenuTrigger asChild>
+              <BurgerMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className='w-screen h-screen border-none rounded-none bg-foreground'>
+              <NavigationMenu className='w-full rounded-t-none bg-secondary border-2 flex justify-end z-40'>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className='bg-transparent'>
+                      Sign in
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent className='w-screen'>
+                      <Button variant={"secondary"}>
+                        <NavLink to='/login' reloadDocument>
+                          Log in with email
+                        </NavLink>
+                      </Button>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
+    </>
   );
 };
 

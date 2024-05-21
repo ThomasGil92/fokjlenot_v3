@@ -1,7 +1,6 @@
+import { Button } from "@/presentation/shadcn/components/ui/button";
 import {
- 
   NavigationMenuItem,
-  navigationMenuTriggerStyle,
 } from "@/presentation/shadcn/components/ui/navigation-menu";
 import { NavLink } from "react-router-dom";
 
@@ -13,11 +12,13 @@ interface NavigationButtonProps {
 const NavigationButton = ({ path, textContent }: NavigationButtonProps) => {
   return (
     <NavigationMenuItem>
-      <NavLink to={path} className={navigationMenuTriggerStyle()}>
-       {/*  <NavigationMenuLink className={navigationMenuTriggerStyle()}> */}
+      <Button asChild>
+        <NavLink to={path}>
+          {/*  <NavigationMenuLink className={navigationMenuTriggerStyle()}> */}
           {textContent}
-        {/* </NavigationMenuLink> */}
-      </NavLink>
+          {/* </NavigationMenuLink> */}
+        </NavLink>
+      </Button>
     </NavigationMenuItem>
   );
 };
