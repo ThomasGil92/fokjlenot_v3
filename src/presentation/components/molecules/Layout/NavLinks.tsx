@@ -87,10 +87,18 @@ const NavLinks = () => {
                     <NavigationMenuTrigger className='bg-transparent'>
                       Sign in
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent className='w-screen'>
-                      <Button variant={"secondary"}>
-                        <NavLink to='/login' reloadDocument>
-                          Log in with email
+                    <NavigationMenuContent className='w-screen p-0 m-0'>
+                      <Button
+                        variant={"secondary"}
+                        className='rounded-none w-full m-0'
+                      >
+                        <NavLink
+                          to='/login'
+                          className='w-full text-start flex justify-between'
+                          reloadDocument
+                        >
+                          <p>Log in with email</p>
+                          <i className='fa-solid fa-chevron-right'></i>
                         </NavLink>
                       </Button>
                     </NavigationMenuContent>
