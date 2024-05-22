@@ -80,24 +80,60 @@ const NavLinks = () => {
             <DropdownMenuTrigger asChild>
               <BurgerMenu isOpen={isOpen} setIsOpen={setIsOpen} />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className='w-screen h-screen border-none rounded-none bg-foreground'>
-              <NavigationMenu className='w-full rounded-t-none bg-secondary border-2 flex justify-end z-40'>
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger className='bg-transparent'>
+            <DropdownMenuContent className='w-screen h-screen border-none rounded-none bg-secondary'>
+              <NavigationMenu className='w-full rounded-t-none bg-secondary flex justify-end z-40'>
+                <NavigationMenuList className='bg-secondary'>
+                  <NavigationMenuItem className='bg-secondary'>
+                    <NavigationMenuTrigger className='bg-secondary'>
                       Sign in
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent className='w-screen p-0 m-0'>
+                    <NavigationMenuContent className='w-screen p-0 m-0 '>
                       <Button
+                        asChild
                         variant={"secondary"}
-                        className='rounded-none w-full m-0'
+                        className='border-r-0 w-full m-0  '
                       >
                         <NavLink
                           to='/login'
-                          className='w-full text-start flex justify-between'
+                          className='w-full text-start flex justify-between  '
                           reloadDocument
                         >
-                          <p>Log in with email</p>
+                          <p>Log in</p>
+                          <i className='fa-solid fa-chevron-right'></i>
+                        </NavLink>
+                      </Button>
+                      <Button
+                        asChild
+                        variant={"secondary"}
+                        className='border-r-0 w-full m-0  '
+                      >
+                        <NavLink
+                          to='/sign-up'
+                          className='w-full text-start flex justify-between  '
+                          reloadDocument
+                        >
+                          <p>Sign up</p>
+                          <i className='fa-solid fa-chevron-right'></i>
+                        </NavLink>
+                      </Button>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className='bg-secondary'>
+                      Menu
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent className='w-screen p-0 m-0 '>
+                      <Button
+                        asChild
+                        variant={"secondary"}
+                        className='border-r-0 w-full m-0  '
+                      >
+                        <NavLink
+                          to='/login'
+                          className='w-full text-start flex justify-between '
+                          reloadDocument
+                        >
+                          <p>Menu à faire</p>
                           <i className='fa-solid fa-chevron-right'></i>
                         </NavLink>
                       </Button>

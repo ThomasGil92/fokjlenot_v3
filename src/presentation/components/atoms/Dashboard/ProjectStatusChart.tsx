@@ -1,6 +1,6 @@
 import { Pie } from "react-chartjs-2";
 
-import "chart.js/auto";
+
 import { useRef } from "react";
 import { useAppSelector } from "@/infra/store/reduxStore";
 import { ProjectStatus } from "@/adapters/secondary/project/project";
