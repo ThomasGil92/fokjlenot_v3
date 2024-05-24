@@ -18,7 +18,7 @@ const ProjectsMenu = () => {
 
   return (
     <>
-      <Card className='col-span-2 border rounded-lg '>
+      <Card className='col-span-11 md:col-span-2 text-center md:text-left border rounded-lg '>
         <ProjectsListCardHeader />
         {loading ? <p>Loading</p> : <ProjectsList projects={projects} />}
       </Card>

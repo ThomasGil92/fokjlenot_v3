@@ -1,5 +1,5 @@
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-import {jwtDecode} from 'jwt-decode'
+
 import LoginFormFields from "../../molecules/Login/LoginFields";
 import SubmitButton from "../../atoms/shared/SubmitButton";
 import {
@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { login } from "@/core/use-cases/auth/login";
 import { useAppDispatch } from "@/infra/store/reduxStore";
+import axios from "axios";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
@@ -47,16 +48,21 @@ const SignUpForm = () => {
     form.reset();
   };
 
-  const responseMessage = (response: CredentialResponse) => {
-    const credentials=jwtDecode(response.credential!)
-    console.log(credentials.email);
+  const responseMessage = async (googleResponse: CredentialResponse) => {
+    //const credentials = jwtDecode(googleResponse.credential!);
+    
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_BASE_URL}/auth/signup/google`,
+      { token: googleResponse.credential! },
+    );
+    console.log(response)
   };
   const errorMessage = () => {
     console.log("Login fail");
   };
 
   return (
-    <Card className='w-1/2 h-min mx-auto'>
+    <Card className='w-4/5 h-min mx-auto'>
       <CardHeader>
         <CardTitle>Signup</CardTitle>
         <CardDescription>Create an account</CardDescription>
@@ -74,7 +80,13 @@ const SignUpForm = () => {
         </Form>
 
         <div className='text-center font-bold'>Or</div>
-        <GoogleLogin type="icon" shape="circle" theme="filled_black" onSuccess={responseMessage} onError={errorMessage} />
+        <GoogleLogin
+          type='icon'
+          shape='circle'
+          theme='filled_black'
+          onSuccess={responseMessage}
+          onError={errorMessage}
+        />
       </CardContent>
     </Card>
   );

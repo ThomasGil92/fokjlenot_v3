@@ -14,6 +14,7 @@ export const dbLoginRetriever = () => {
 
       return { token: response.data.access_token, user: response.data.user };
     },
+    
     getUserByToken: async (
       token: Token["access_token"],
     ): Promise<{ email: string; id: string }> => {

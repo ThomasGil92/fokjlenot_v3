@@ -7,6 +7,7 @@ export const authGateway = (authRetriever: AuthRetriever) => {
       const response = await authRetriever.login(userCredentials);
       return response;
     },
+
     getUserByToken: async (token: Token["access_token"]) => {
       const response = await authRetriever.getUserByToken(token);
       return response;

@@ -12,8 +12,10 @@ import { Form } from "@/presentation/shadcn/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { login } from "@/core/use-cases/auth/login";
+import { login, loginWithGoogle } from "@/core/use-cases/auth/login";
 import { useAppDispatch } from "@/infra/store/reduxStore";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+//import axios from "axios";
 
 export function LoginForm() {
   const navigate = useNavigate();
@@ -45,19 +47,46 @@ export function LoginForm() {
     form.reset();
   };
 
+  const responseMessage = async (googleResponse: CredentialResponse) => {
+    /* //const credentials = jwtDecode(googleResponse.credential!);
+
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_BASE_URL}/auth/signin/google`,
+      { token: googleResponse.credential! },
+    );
+    console.log(response); */
+    await dispatch(loginWithGoogle(googleResponse.credential!))
+    navigate("/dashboard")
+  };
+  const errorMessage = () => {
+    console.log("Login fail");
+  };
+
   return (
-    <Card className='w-1/2 h-min mx-auto'>
+    <Card className='w-4/5 md:w-1/2 h-min mx-auto'>
       <CardHeader>
         <CardTitle>Connexion</CardTitle>
         <CardDescription>Connect to your account</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form data-testid="loginForm" onSubmit={form.handleSubmit(handleSubmit)} className=''>
+          <form
+            data-testid='loginForm'
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className=''
+          >
             <LoginFormFields form={form} />
-            <SubmitButton text='Se connecter' testId="loginButton" />
+            <SubmitButton text='Se connecter' testId='loginButton' />
           </form>
         </Form>
+        <div className='text-center font-bold'>Or</div>
+        <GoogleLogin
+          type='icon'
+          shape='circle'
+          theme='filled_black'
+          onSuccess={responseMessage}
+          onError={errorMessage}
+        />
       </CardContent>
     </Card>
   );

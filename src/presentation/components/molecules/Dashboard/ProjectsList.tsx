@@ -26,10 +26,10 @@ interface ProjectListProp {
 }
 
 const ProjectsList: React.FC<ProjectListProp> = ({ projects }) => {
-  const dispatch=useAppDispatch()
+  const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.auth.access_token!);
 
-  const [open,setOpen]=useState(false)
+  const [open, setOpen] = useState(false);
 
   const formSchema = z.object({
     title: z
@@ -53,10 +53,8 @@ const ProjectsList: React.FC<ProjectListProp> = ({ projects }) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-  
-
-    dispatch(postNewProject({ token,newProject:values}));
-setOpen(false)
+    dispatch(postNewProject({ token, newProject: values }));
+    setOpen(false);
     form.reset();
   };
 
@@ -66,30 +64,32 @@ setOpen(false)
         <DialogTrigger asChild>
           <Button data-testid='addButton'>New project</Button>
         </DialogTrigger>
-        <DialogContent data-testid='addProjectDialog' className="w-6/12">
+        <DialogContent data-testid='addProjectDialog' className='w-6/12'>
           <DialogHeader>
             <DialogTitle>Create a new Project</DialogTitle>
           </DialogHeader>
           <Form {...form}>
-          <form
-            data-testid='addProjectForm'
-            onSubmit={form.handleSubmit(onSubmit)}
-            className=''
-          >
-            <AddProjectFormFields form={form} />
-            <SubmitButton text='Save' testId="addProjectButton" />
-          </form></Form>
+            <form
+              data-testid='addProjectForm'
+              onSubmit={form.handleSubmit(onSubmit)}
+              className=''
+            >
+              <AddProjectFormFields form={form} />
+              <SubmitButton text='Save' testId='addProjectButton' />
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
 
-      {projects.map((project) => (
-        <div
-          key={project.id + project.title + "ProjectListItem"}
-          className='group flex flex-col gap-4 py-2'
-        >
-          <ProjectsListItem {...project} />
-        </div>
-      ))}
+      {projects.length > 0 &&
+        projects.map((project) => (
+          <div
+            key={project.id + project.title + "ProjectListItem"}
+            className='group flex flex-col gap-4 py-2'
+          >
+            <ProjectsListItem {...project} />
+          </div>
+        ))}
     </CardContent>
   );
 };

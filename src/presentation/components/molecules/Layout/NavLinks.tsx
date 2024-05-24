@@ -108,7 +108,7 @@ const NavLinks = () => {
                         className='border-r-0 w-full m-0  '
                       >
                         <NavLink
-                          to='/sign-up'
+                          to='/signup'
                           className='w-full text-start flex justify-between  '
                           reloadDocument
                         >

@@ -1,7 +1,7 @@
 import { AppState } from "@/infra/store/appState";
 import { createReducer } from "@reduxjs/toolkit";
 import { isAuth } from "../use-cases/auth/isAuth";
-import { login } from "../use-cases/auth/login";
+import { login, loginWithGoogle } from "../use-cases/auth/login";
 import { logout } from "../use-cases/auth/logout";
 
 const initialState: AppState["auth"] = {
@@ -23,7 +23,7 @@ export const authRetrievalReducer = createReducer(initialState, (builder) => {
           first_name: "",
           last_name: "",
         },
-        access_token:action.payload.token,
+        access_token: action.payload.token,
         loading: false,
       };
     })
@@ -37,5 +37,12 @@ export const authRetrievalReducer = createReducer(initialState, (builder) => {
       localStorage.removeItem("authToken");
       state.isAuth = false;
       state.access_token = null;
+    })
+    .addCase(loginWithGoogle.fulfilled, (state, action) => {
+      localStorage.setItem("authToken", action.payload.token as string);
+      state.access_token = action.payload.token as string;
+      state.isAuth = true;
+      state.user = action.payload.user;
+      
     });
 });
