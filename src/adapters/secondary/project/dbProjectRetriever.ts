@@ -15,11 +15,11 @@ export const dbProjectRetriever = (): ProjectRetriever => {
             headers: { Authorization: `Bearer ${token}` },
           },
         );
-        console.log(response.data);
+        
         return response.data;
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          //   console.log(error.response?.data.error);
+          
           throw new Error(error.response?.statusText);
         }
       }
@@ -39,7 +39,6 @@ export const dbProjectRetriever = (): ProjectRetriever => {
         return response.data;
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          //   console.log(error.response?.data.error);
           throw new Error(error.response?.statusText);
         }
       }
@@ -64,7 +63,6 @@ export const dbProjectRetriever = (): ProjectRetriever => {
         return response.data;
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          //   console.log(error.response?.data.error);
           throw new Error(error.response?.statusText);
         }
       }

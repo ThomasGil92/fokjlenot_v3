@@ -47,7 +47,6 @@ const TaskItem = ({ task }: { task: Task }) => {
     }),
     [task],
   );
-console.log(task)
   return (
     <>
       <div ref={drag} className='w-full p-3' style={{ opacity }}>

@@ -6,7 +6,7 @@ import { ProjectStatus } from "@/adapters/secondary/project/project";
 const ProjectStatusChart = () => {
   const ref = useRef(null);
   const projects = useAppSelector((state) => state.projects.list);
-Chart.register(...registerables);
+  Chart.register(...registerables);
   const projectsStatusData = () => {
     const pendingProjects = projects.filter(
       (project) =>
@@ -22,11 +22,7 @@ Chart.register(...registerables);
       (project) =>
         project.status.toLocaleUpperCase() === ProjectStatus.DONE.toUpperCase(),
     );
-    console.log(
-      pendingProjects.length,
-      progressProject.length,
-      doneProjects.length,
-    );
+
     return [
       pendingProjects.length,
       progressProject.length,
@@ -35,7 +31,7 @@ Chart.register(...registerables);
   };
 
   return (
-    <div data-testid='projectStatusChart'>
+    <div data-testid='projectStatusChart' className='flex justify-center'>
       {projects.length > 0 && (
         <ReactChartJs
           type='pie'

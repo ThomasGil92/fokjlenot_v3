@@ -29,7 +29,6 @@ const PopoverButton = ({
   children: ReactNode;
   task: Task;
 }) => {
-  console.log(task)
   const [open, setOpen] = useState(false);
   const token = useAppSelector((state) => state.auth.access_token!);
 

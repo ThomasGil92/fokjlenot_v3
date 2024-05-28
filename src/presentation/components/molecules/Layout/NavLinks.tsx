@@ -65,9 +65,14 @@ const NavLinks = () => {
               <NavigationMenu className='w-full rounded-t-none bg-secondary border-2 flex justify-end z-40'>
                 <NavigationMenuList>
                   <NavigationMenuItem>
+                    <Button asChild variant={"link"} >
+                      <NavLink to='/dashboard' reloadDocument>
+                        Tableau de bord
+                      </NavLink>
+                    </Button>
                     <Button asChild variant={"link"} onClick={handleLogout}>
                       <NavLink to='/login' reloadDocument>
-                        Log Out
+                        Déconnexion
                       </NavLink>
                     </Button>
                   </NavigationMenuItem>

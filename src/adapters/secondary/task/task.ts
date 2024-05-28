@@ -43,5 +43,5 @@ export interface tasksRetriever {
   updateTask: (
     token: Token["access_token"],
     updatedTask: Task,
-  ) => Promise<Task[]>;
+  ) => Promise<Task>;
 }

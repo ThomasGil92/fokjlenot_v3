@@ -70,7 +70,7 @@ export const dbTasksRetriever = (): tasksRetriever => {
           { ...updatedTask },
           { headers: { Authorization: `Bearer ${token}` } },
         );
-        return response.data.updated_task_list;
+        return response.data;
       } catch (error) {
         if (axios.isAxiosError(error)) {
           //   console.log(error.response?.data.error);
