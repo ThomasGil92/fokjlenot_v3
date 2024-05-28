@@ -62,8 +62,9 @@ const ProjectCardHeader = () => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     
-    console.log("test");
-    const newTask = { ...values, projectId: selected?.id, collaborators: [] };
+
+    const newTask = { ...values, projectId: selected?.id };
+    console.log(newTask)
     await dispatch(postNewTask({ token, newTask }));
 setOpen(false)
     form.reset();
@@ -82,7 +83,7 @@ setOpen(false)
                 Add task
               </Button>
             </SheetTrigger>
-            <SheetContent side={"bottom"}>
+            <SheetContent side={"left"} className="w-full md:w-3/4">
               <SheetHeader>
                 <SheetTitle>Add a task</SheetTitle>
                 <SheetDescription>
@@ -162,7 +163,7 @@ setOpen(false)
                                   {Object.values(TaskStatus).map(
                                     (option, id) => (
                                       <SelectItem
-                                        value={option.toLowerCase()}
+                                        value={option}
                                         key={id + option}
                                         {...form.register("status")}
                                       >

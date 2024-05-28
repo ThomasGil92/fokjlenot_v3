@@ -5,4 +5,7 @@ export interface GoogleAuthRetriever {
   loginWithGoogle(
     token: string,
   ): Promise<{ token: Token | Token["access_token"]; user: User }>;
+  signupWithGoogle(
+    token: string,
+  ): Promise<{ token: Token | Token["access_token"]; user: User }>;
 }

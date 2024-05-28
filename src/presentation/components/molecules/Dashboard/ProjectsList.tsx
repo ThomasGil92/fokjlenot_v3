@@ -28,6 +28,7 @@ interface ProjectListProp {
 const ProjectsList: React.FC<ProjectListProp> = ({ projects }) => {
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.auth.access_token!);
+  const userId = useAppSelector((state) => state.auth.user?.id);
 
   const [open, setOpen] = useState(false);
 
@@ -35,20 +36,18 @@ const ProjectsList: React.FC<ProjectListProp> = ({ projects }) => {
     title: z
       .string()
       .min(1, { message: "You must provide a title for this project" }),
-    id: z.string(),
+
     status: z.nativeEnum(ProjectStatus),
-    owner: z.string(),
-    collaborators: z.array(z.string()),
+    ownerId: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      id: "1",
-      collaborators: ["1"],
+
       status: ProjectStatus.PENDING,
-      owner: "1",
+      ownerId: userId,
     },
   });
 
@@ -61,12 +60,23 @@ const ProjectsList: React.FC<ProjectListProp> = ({ projects }) => {
   return (
     <CardContent>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button data-testid='addButton'>New project</Button>
-        </DialogTrigger>
-        <DialogContent data-testid='addProjectDialog' className='w-6/12'>
+        <div className='flex justify-end'>
+          <DialogTrigger asChild className='p-3 text-center'>
+            <Button
+              data-testid='addButton'
+              className='text-3xl text-center m-0 p-0 w-8 h-8 inline-block leading-8'
+            >
+              +
+            </Button>
+          </DialogTrigger>
+        </div>
+
+        <DialogContent
+          data-testid='addProjectDialog'
+          className=' md:w-6/12 h-dvh w-dvw justify-normal flex flex-col'
+        >
           <DialogHeader>
-            <DialogTitle>Create a new Project</DialogTitle>
+            <DialogTitle className='text-3xl'>Create a new Project</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form
@@ -75,7 +85,7 @@ const ProjectsList: React.FC<ProjectListProp> = ({ projects }) => {
               className=''
             >
               <AddProjectFormFields form={form} />
-              <SubmitButton text='Save' testId='addProjectButton' />
+              <SubmitButton text='Créer' testId='addProjectButton' />
             </form>
           </Form>
         </DialogContent>

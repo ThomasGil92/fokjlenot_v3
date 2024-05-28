@@ -10,11 +10,10 @@ export enum ProjectStatus {
 export type UserId = User["id"];
 
 export type Project = {
-  id: string;
+  id?: string;
   title: string;
   status: ProjectStatus;
-  owner: UserId;
-  collaborators: User["id"][];
+  ownerId: UserId;
 };
 
 export interface ProjectRetriever {
@@ -29,5 +28,5 @@ export interface ProjectRetriever {
   postNewProject: (
     token: Token["access_token"] | null,
     newProject: Project,
-  ) => Promise<Project[]>;
+  ) => Promise<Project>;
 }

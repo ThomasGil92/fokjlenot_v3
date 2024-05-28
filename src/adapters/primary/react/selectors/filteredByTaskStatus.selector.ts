@@ -5,18 +5,18 @@ import { createSelector } from "@reduxjs/toolkit";
 export const doneTasks = createSelector(
   (state: AppState) => state.tasks.list,
   (tasks) => ({
-    tasks: tasks.filter((task) => task.status === TaskStatus.DONE),
+    tasks: tasks.filter((task) => task.status.toUpperCase() === TaskStatus.DONE),
   }),
 );
 export const pendingTasks = createSelector(
   (state: AppState) => state.tasks.list,
   (tasks) => ({
-    tasks: tasks.filter((task) => task.status === TaskStatus.PENDING),
+    tasks: tasks.filter((task) => task.status.toUpperCase() === TaskStatus.PENDING),
   }),
 );
 export const progressTasks = createSelector(
   (state: AppState) => state.tasks.list,
   (tasks) => ({
-    tasks: tasks.filter((task) => task.status === TaskStatus.PROGRESS),
+    tasks: tasks.filter((task) => task.status.toUpperCase() === TaskStatus.PROGRESS),
   }),
 );

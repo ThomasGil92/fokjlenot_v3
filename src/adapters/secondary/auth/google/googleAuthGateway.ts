@@ -6,5 +6,9 @@ export const googleAuthGateway = (googleAuthRetriever: GoogleAuthRetriever) => {
       const response = await googleAuthRetriever.loginWithGoogle(token);
       return response;
     },
+    signupWithGoogle: async (token: string) => {
+      const response = await googleAuthRetriever.loginWithGoogle(token);
+      return response;
+    },
   };
 };

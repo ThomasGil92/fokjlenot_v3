@@ -5,7 +5,10 @@ export interface AuthRetriever {
   login(
     userCredential: UserCredential,
   ): Promise<{ token: Token | Token["access_token"]; user: User }>;
-   getUserByToken(
+  getUserByToken(
     token: Token["access_token"],
   ): Promise<{ email: string; id: string }>;
+  signup(
+    userCredential: UserCredential,
+  ): Promise<{ token: Token | Token["access_token"]; user: User }>;
 }

@@ -1,31 +1,34 @@
 import { authGateway } from "@/adapters/secondary/auth/authGateway";
 import { createAppAsyncThunk } from "../createAppAsyncThunk";
 import { Token, UserCredential } from "./auth";
-import { dbLoginRetriever } from "@/adapters/secondary/auth/dbLoginRetriever";
 import { User } from "@/adapters/secondary/user/user";
 import { googleLoginRetriever } from "@/adapters/secondary/auth/google/googleLoginRetriever";
 import { googleAuthGateway } from "@/adapters/secondary/auth/google/googleAuthGateway";
+import { dbLoginRetriever } from "@/adapters/secondary/auth/dbLoginRetriever";
 
-export const login = createAppAsyncThunk<
+
+export const signup = createAppAsyncThunk<
   { token: Token | Token["access_token"]; user: User },
-  UserCredential
->("userLogin", async (userCredentials) => {
+  UserCredential,
+  { rejectValue: string }
+>("userSignup", async (userCredentials, { rejectWithValue }) => {
   try {
-    const response = await authGateway(dbLoginRetriever()).login(
+    const response = await authGateway(dbLoginRetriever()).signup(
       userCredentials,
     );
     return response;
   } catch (error) {
-    throw new Error("Bad credentials");
+    const err = error as Error;
+    return rejectWithValue(err.message);
   }
 });
-export const loginWithGoogle = createAppAsyncThunk<
+export const signupWithGoogle = createAppAsyncThunk<
   { token: Token | Token["access_token"]; user: User },
   string
->("userLoginWithGoogle", async (token) => {
+>("userSignupWithGoogle", async (token) => {
   const response = await googleAuthGateway(
     googleLoginRetriever(),
-  ).loginWithGoogle(token);
+  ).signupWithGoogle(token);
 
   return response;
 });

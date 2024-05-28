@@ -28,7 +28,7 @@ export const projectsReducer = createReducer(initialState, (builder) => {
     .addCase(postNewProject.rejected, (_, action) => {
       return { ...initialState, error: action.error.message };
     })
-    .addCase(postNewProject.fulfilled, (_, action) => {
-      return { ...initialState, list: action.payload };
+    .addCase(postNewProject.fulfilled, (state, action) => {
+      return { ...initialState, list: [...state.list,action.payload] };
     });
 });

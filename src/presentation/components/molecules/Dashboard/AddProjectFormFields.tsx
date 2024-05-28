@@ -1,18 +1,30 @@
 import { UseFormReturn } from "react-hook-form";
 import { ProjectStatus } from "@/adapters/secondary/project/project";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/presentation/shadcn/components/ui/form";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/presentation/shadcn/components/ui/form";
 import { Input } from "@/presentation/shadcn/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/presentation/shadcn/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/presentation/shadcn/components/ui/select";
 import { TaskStatus } from "@/adapters/secondary/task/task";
 
 interface AddProjectFieldsInterface {
   form: UseFormReturn<
     {
       title: string;
-      id: string;
+      
       status: ProjectStatus;
-      owner: string;
-      collaborators: string[];
+      ownerId: string;
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     any,
@@ -28,7 +40,6 @@ const AddProjectFormFields: React.FC<AddProjectFieldsInterface> = ({
     <>
       <FormField
         name={"title"}
-        //control={control}
         render={({ field }) => {
           return (
             <FormItem className='mb-5'>
@@ -63,7 +74,7 @@ const AddProjectFormFields: React.FC<AddProjectFieldsInterface> = ({
       /> */}
 
       <FormField
-        name="status"
+        name='status'
         //control={control}
         render={({ field }) => {
           return (
@@ -78,7 +89,7 @@ const AddProjectFormFields: React.FC<AddProjectFieldsInterface> = ({
                   <SelectTrigger className='w-[180px]'>
                     <SelectValue placeholder='Choose a status' />
                   </SelectTrigger>
-                  <SelectContent >
+                  <SelectContent>
                     {Object.values(TaskStatus).map((option, id) => (
                       <SelectItem
                         value={option.toLowerCase()}
@@ -91,16 +102,14 @@ const AddProjectFormFields: React.FC<AddProjectFieldsInterface> = ({
                   </SelectContent>
                 </Select>
               </FormControl>
-                <FormDescription>
-                  Select the status of the project
-                </FormDescription>
+              <FormDescription>
+                Select the status of the project
+              </FormDescription>
               <FormMessage />
             </FormItem>
           );
         }}
       />
-
-     
     </>
   );
 };

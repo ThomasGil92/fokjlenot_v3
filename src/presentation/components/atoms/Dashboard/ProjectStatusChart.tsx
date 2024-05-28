@@ -1,23 +1,32 @@
-import { Pie } from "react-chartjs-2";
-
+import { Chart, registerables } from "chart.js";
+import { Chart as ReactChartJs } from "react-chartjs-2";
 import { useRef } from "react";
 import { useAppSelector } from "@/infra/store/reduxStore";
 import { ProjectStatus } from "@/adapters/secondary/project/project";
 const ProjectStatusChart = () => {
-  const ref = useRef();
+  const ref = useRef(null);
   const projects = useAppSelector((state) => state.projects.list);
-
+Chart.register(...registerables);
   const projectsStatusData = () => {
     const pendingProjects = projects.filter(
-      (project) => project.status === ProjectStatus.PENDING.toUpperCase(),
+      (project) =>
+        project.status.toLocaleUpperCase() ===
+        ProjectStatus.PENDING.toUpperCase(),
     );
     const progressProject = projects.filter(
-      (project) => project.status === ProjectStatus.PROGRESS.toUpperCase(),
+      (project) =>
+        project.status.toLocaleUpperCase() ===
+        ProjectStatus.PROGRESS.toUpperCase(),
     );
     const doneProjects = projects.filter(
-      (project) => project.status === ProjectStatus.DONE.toUpperCase(),
+      (project) =>
+        project.status.toLocaleUpperCase() === ProjectStatus.DONE.toUpperCase(),
     );
-
+    console.log(
+      pendingProjects.length,
+      progressProject.length,
+      doneProjects.length,
+    );
     return [
       pendingProjects.length,
       progressProject.length,
@@ -28,9 +37,8 @@ const ProjectStatusChart = () => {
   return (
     <div data-testid='projectStatusChart'>
       {projects.length > 0 && (
-        <Pie
-          ref={ref}
-          options={{}}
+        <ReactChartJs
+          type='pie'
           data={{
             labels: ["Pending", "Progress", "Done"],
             datasets: [
@@ -42,6 +50,9 @@ const ProjectStatusChart = () => {
               },
             ],
           }}
+          ref={ref}
+          /* options={{}} */
+
           // {...props}
         />
       )}

@@ -12,5 +12,9 @@ export const authGateway = (authRetriever: AuthRetriever) => {
       const response = await authRetriever.getUserByToken(token);
       return response;
     },
+    signup:async(userCredentials:UserCredential)=>{
+      const response=await authRetriever.signup(userCredentials)
+      return response
+    }
   };
 };

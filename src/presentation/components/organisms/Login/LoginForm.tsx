@@ -13,13 +13,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { login, loginWithGoogle } from "@/core/use-cases/auth/login";
-import { useAppDispatch } from "@/infra/store/reduxStore";
+import { useAppDispatch /* useAppSelector */ } from "@/infra/store/reduxStore";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 //import axios from "axios";
 
 export function LoginForm() {
+  //const isAuth = useAppSelector((state) => state.auth.isAuth);
   const navigate = useNavigate();
-  const dispatch=useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const formSchema = z.object({
     email: z
@@ -41,10 +42,12 @@ export function LoginForm() {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     // e.preventDefault();
-   
-    await dispatch(login(values));
-    navigate("/dashboard");
-    form.reset();
+
+    const result = await dispatch(login(values));
+    if (login.fulfilled.match(result)) {
+      navigate("/dashboard");
+      form.reset();
+    }
   };
 
   const responseMessage = async (googleResponse: CredentialResponse) => {
@@ -54,9 +57,12 @@ export function LoginForm() {
       `${import.meta.env.VITE_API_BASE_URL}/auth/signin/google`,
       { token: googleResponse.credential! },
     );
-    console.log(response); */
-    await dispatch(loginWithGoogle(googleResponse.credential!))
-    navigate("/dashboard")
+    console.log(response); */ try {
+      await dispatch(loginWithGoogle(googleResponse.credential!));
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
   };
   const errorMessage = () => {
     console.log("Login fail");
@@ -76,17 +82,28 @@ export function LoginForm() {
             className=''
           >
             <LoginFormFields form={form} />
+            {form.formState.errors && (
+              <p className='text-destructive'>
+                {form.formState.errors.root?.message}
+              </p>
+            )}
             <SubmitButton text='Se connecter' testId='loginButton' />
           </form>
         </Form>
-        <div className='text-center font-bold'>Or</div>
-        <GoogleLogin
-          type='icon'
-          shape='circle'
-          theme='filled_black'
-          onSuccess={responseMessage}
-          onError={errorMessage}
-        />
+        <div className='flex justify-between my-5'>
+          <div className='h-1 border-t my-auto w-full' />
+          <span className='text-center px-4 font-bold text-3xl'>Or</span>
+          <div className='h-1 border-t my-auto w-full' />
+        </div>
+        <div className='flex justify-center mt-3'>
+          <GoogleLogin
+            type='standard'
+            shape='pill'
+            theme='outline'
+            onSuccess={responseMessage}
+            onError={errorMessage}
+          />
+        </div>
       </CardContent>
     </Card>
   );

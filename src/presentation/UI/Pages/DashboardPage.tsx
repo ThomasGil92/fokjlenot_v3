@@ -4,10 +4,10 @@ import ProjectsMenu from "@/presentation/components/organisms/Dashboard/Projects
 const DashboardPage = () => {
   return (
     <>
-      <header className='text-center'>
-        <h1>Dashboard</h1>
+      <header className='text-center mb-5'>
+        <h1 className="text-4xl font-bold">Projets</h1>
       </header>
-      <main className='px-5 grid md:grid-cols-12 gap-4'>
+      <main className='px-5 md:grid grid-cols-12 gap-4'>
         <ProjectsMenu />
         <div className='col-span-10 grid md:grid-cols-12 gap-4'>
           <ProjectStatusSection />

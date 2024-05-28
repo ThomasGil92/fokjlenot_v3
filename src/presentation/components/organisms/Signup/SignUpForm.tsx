@@ -14,9 +14,9 @@ import { Form } from "@/presentation/shadcn/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { login } from "@/core/use-cases/auth/login";
 import { useAppDispatch } from "@/infra/store/reduxStore";
-import axios from "axios";
+
+import { signup, signupWithGoogle } from "@/core/use-cases/auth/signup";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
@@ -29,7 +29,21 @@ const SignUpForm = () => {
       .email("This is not a valid email."),
     password: z
       .string()
-      .min(4, { message: "Your password should have 4 character min" }),
+      .min(8, {
+        message: "Le mot de passe doit contenir au moins 8 caractères",
+      })
+      .regex(/[a-z]/, {
+        message: "Le mot de passe doit contenir au moins une lettre minuscule",
+      })
+      .regex(/[A-Z]/, {
+        message: "Le mot de passe doit contenir au moins une lettre majuscule",
+      })
+      .regex(/[0-9]/, {
+        message: "Le mot de passe doit contenir au moins un chiffre",
+      })
+      .regex(/[^a-zA-Z0-9]/, {
+        message: "Le mot de passe doit contenir au moins un symbole",
+      }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,19 +57,21 @@ const SignUpForm = () => {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     // e.preventDefault();
 
-    await dispatch(login(values));
-    navigate("/dashboard");
-    form.reset();
+    const result = await dispatch(signup(values));
+    if (!signup.fulfilled.match(result)) {
+      form.setError("email", {
+        type: "custom",
+        message: "Cet email est déja utilisé",
+      });
+    } else {
+      navigate("/dashboard");
+      form.reset();
+    }
   };
 
   const responseMessage = async (googleResponse: CredentialResponse) => {
-    //const credentials = jwtDecode(googleResponse.credential!);
-    
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/auth/signup/google`,
-      { token: googleResponse.credential! },
-    );
-    console.log(response)
+    await dispatch(signupWithGoogle(googleResponse.credential!));
+    navigate("/dashboard");
   };
   const errorMessage = () => {
     console.log("Login fail");
@@ -75,7 +91,7 @@ const SignUpForm = () => {
             className=''
           >
             <LoginFormFields form={form} />
-            <SubmitButton text='Se connecter' testId='signUpButton' />
+            <SubmitButton text='Créer mon compte' testId='signUpButton' />
           </form>
         </Form>
 

@@ -2,14 +2,14 @@ import { createAppAsyncThunk } from "../createAppAsyncThunk";
 import { Token } from "../auth/auth";
 import { Task } from "@/adapters/secondary/task/task";
 import { tasksGateway } from "@/adapters/secondary/task/tasksGateway";
-import { mswTasksRetriever } from "@/adapters/secondary/task/mswTasksRetriever";
+import { dbTasksRetriever } from "@/adapters/secondary/task/dbTasksRetriever";
 
 export const postNewTask = createAppAsyncThunk<
-  Task[],
+  Task,
   { token: Token["access_token"]; newTask: Partial<Task> }
 >("postNewtask", async ({ token, newTask }) => {
   const new_task_list = await tasksGateway(
-    mswTasksRetriever(),
+    dbTasksRetriever(),
   ).postNewTask(token, newTask);
   return new_task_list;
 });

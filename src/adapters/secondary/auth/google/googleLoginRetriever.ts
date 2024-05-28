@@ -14,5 +14,15 @@ export const googleLoginRetriever = () => {
 
       return { token: response.data.access_token, user: response.data.user };
     },
+    signupWithGoogle: async (
+      token: string,
+    ): Promise<{ token: Token["access_token"]; user: User }> => {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/auth/signup/google`,
+        {token},
+      );
+
+      return { token: response.data.access_token, user: response.data.user };
+    },
   };
 };

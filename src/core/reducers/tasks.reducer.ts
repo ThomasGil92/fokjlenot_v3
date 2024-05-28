@@ -19,7 +19,6 @@ export const tasksReducer = createReducer(initialState, (builder) => {
       const tasks = action.payload.tasks.map((task) => {
         return {
           ...task,
-          status: task.status.toLocaleLowerCase() as TaskStatus,
         };
       });
       return { ...initialState, list: tasks };
@@ -27,8 +26,8 @@ export const tasksReducer = createReducer(initialState, (builder) => {
     .addCase(getProjectById.rejected, (_, action) => {
       return { ...initialState, error: action.error.message };
     })
-    .addCase(postNewTask.fulfilled, (_, action) => {
-      return { ...initialState, list: action.payload };
+    .addCase(postNewTask.fulfilled, (state, action) => {
+      return { ...initialState, list: [...state.list, action.payload] };
     })
     .addCase(updateTaskStatus.fulfilled, (_, action) => {
       return { ...initialState, list: action.payload };

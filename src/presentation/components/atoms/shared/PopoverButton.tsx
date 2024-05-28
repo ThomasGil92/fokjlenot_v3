@@ -29,6 +29,7 @@ const PopoverButton = ({
   children: ReactNode;
   task: Task;
 }) => {
+  console.log(task)
   const [open, setOpen] = useState(false);
   const token = useAppSelector((state) => state.auth.access_token!);
 
@@ -44,7 +45,7 @@ const PopoverButton = ({
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values.priority);
+    console.log(values,task);
     dispatch(
       updateTask({
         token,
@@ -74,7 +75,6 @@ const PopoverButton = ({
               <FormField
                 name='priority'
                 render={({ field }) => {
-                  console.log(field);
                   return (
                     <RadioGroup
                       defaultValue={task.priority}

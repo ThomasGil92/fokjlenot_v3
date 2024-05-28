@@ -28,10 +28,14 @@ export const dbTasksRetriever = (): tasksRetriever => {
       newTask: Partial<Task>,
     ) => {
       try {
-        const response = await axios.post("/api/newTask", newTask, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        return response.data.new_task_list;
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/task`,
+          newTask,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+        return response.data;
       } catch (error) {
         if (axios.isAxiosError(error)) {
           //   console.log(error.response?.data.error);
@@ -59,10 +63,11 @@ export const dbTasksRetriever = (): tasksRetriever => {
       }
     },
     updateTask: async (token: Token["access_token"], updatedTask: Task) => {
+      
       try {
-        const response = await axios.put(
-          "/api/updateTask",
-          { updatedTask },
+        const response = await axios.patch(
+          `${import.meta.env.VITE_API_BASE_URL}/task/patch`,
+          { ...updatedTask },
           { headers: { Authorization: `Bearer ${token}` } },
         );
         return response.data.updated_task_list;
