@@ -1,11 +1,11 @@
 import React from "react";
+import "@/presentation/components/styles/globals.scss";
 import { createRoot } from "react-dom/client";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { initReduxStore } from "@/infra/store/reduxStore";
 import { Provider } from "react-redux";
 import RouteProvider from "@/presentation/Router";
 
-import "@/presentation/components/styles/globals.scss";
 import "react-toastify/dist/ReactToastify.css";
 //import { mockAuthGateway } from "./adapters/secondary/auth/mockAuthGateway";
 // import { stubAuthTokenRetriever } from "./adapters/secondary/auth/stubAuthTokenRetriever";
