@@ -1,4 +1,5 @@
-import { Project } from "@/domain/entities/Project";
+
+import { Project } from "@/adapters/secondary/project/project";
 import { buttonVariants } from "@/presentation/shadcn/components/ui/button";
 import { cn } from "@/presentation/shadcn/lib/utils";
 import { Link } from "react-router-dom";

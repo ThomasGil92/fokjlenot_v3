@@ -44,7 +44,7 @@ export const authRetrievalReducer = createReducer(initialState, (builder) => {
       state.isAuth = true;
       state.user = action.payload.user;
     })
-    .addCase(signup.rejected, (state, action) => {
+    .addCase(signup.rejected, (_state, action) => {
       // Afficher un toast ou gérer l'erreur d'inscription ici
       toast.error(action.payload);
     })

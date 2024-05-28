@@ -22,21 +22,21 @@ let projects: Project[] = [
     id: "1",
     title: "First Project",
     status: ProjectStatus.PENDING,
-    owner: "1",
+    ownerId: "1",
     collaborators: [],
   },
   {
     id: "2",
     title: "Second Project",
     status: ProjectStatus.DONE,
-    owner: "1",
+    ownerId: "1",
     collaborators: [],
   },
   {
     id: "3",
     title: "third Project",
     status: ProjectStatus.DONE,
-    owner: "2",
+    ownerId: "2",
     collaborators: [],
   },
 ];
@@ -46,7 +46,7 @@ const filteredByUserId = (
   projectId?: Project["id"] | null,
 ) => {
   const filteredProjects = projectArray.filter(
-    (project) => project.owner === "1",
+    (project) => project.ownerId === "1",
   );
   if (projectId)
     return filteredProjects.find((project) => project.id === projectId);

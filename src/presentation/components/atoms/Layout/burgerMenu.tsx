@@ -1,5 +1,5 @@
 import { Button } from "@/presentation/shadcn/components/ui/button";
-import { useState, forwardRef } from "react";
+import {  forwardRef } from "react";
 
 interface BurgerMenuProps {
   isOpen: boolean;

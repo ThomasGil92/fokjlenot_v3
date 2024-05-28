@@ -13,7 +13,7 @@ export type Project = {
   id?: string;
   title: string;
   status: ProjectStatus;
-  ownerId: UserId;
+  ownerId: UserId;collaborators?:User[]
 };
 
 export interface ProjectRetriever {
