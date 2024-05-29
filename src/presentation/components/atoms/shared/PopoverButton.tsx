@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import SubmitButton from "./SubmitButton";
 import { updateTask } from "@/core/use-cases/tasks/updateTask";
+import { Button } from "@/presentation/shadcn/components/ui/button";
 
 const PopoverButton = ({
   children,
@@ -44,7 +45,7 @@ const PopoverButton = ({
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values,task);
+    console.log(values, task);
     dispatch(
       updateTask({
         token,
@@ -55,8 +56,12 @@ const PopoverButton = ({
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>{children}</PopoverTrigger>
+    <Popover modal={true} open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild onClick={()=>setOpen(true)}>
+        <Button variant={"ghost"} className={`p-0 m-0 hover:bg-transparent`}>
+          {children}
+        </Button>
+      </PopoverTrigger>
       <PopoverContent className='w-40'>
         <div className='grid gap-4'>
           <div className='space-y-2'>
@@ -102,7 +107,6 @@ const PopoverButton = ({
                       </div>
                       <div className='flex items-center space-x-2'>
                         <FormControl>
-                          
                           <RadioGroupItem
                             value={TaskPriority.HIGHT}
                             id='hight'

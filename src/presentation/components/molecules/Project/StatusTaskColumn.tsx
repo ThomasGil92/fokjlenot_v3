@@ -32,14 +32,14 @@ const StatusTaskColumn = ({ tasks, status }: StatusTaskColumnProps) => {
   return (
     <div
       ref={drop}
-      className='col-span-4 md:grid-cols-12 border'
+      className='md:col-span-4 md:grid-cols-12 border p-3'
       style={{ backgroundColor: selectBackgroundColor(isActive) }}
     >
       <div
-        className='border-b py-3 text-center bg-white'
+        className=' font-semibold bg-white'
         style={{ backgroundColor: selectBackgroundColor(isActive) }}
       >
-        <h3 className='text-xl'>{status[0].toUpperCase() + status.slice(1)}</h3>
+        <h3 className='text-xl mb-5'>{status[0].toUpperCase() + status.slice(1)} <span className="text-primary/60">{tasks.length}</span></h3>
       </div>
 
       {tasks &&
