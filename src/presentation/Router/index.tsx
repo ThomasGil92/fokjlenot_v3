@@ -21,7 +21,7 @@ export const routesConfig = [
     children: [
       { index: true, element: <HomePage /> },
       { path: "/signup", element: <SignUpPage /> },
-      { path: "login", element: <LoginPage /> },
+      { path: "/login", element: <LoginPage /> },
       {
         element: <ProtectedRoutes />,
         //loader: tokenToStoreLoader,

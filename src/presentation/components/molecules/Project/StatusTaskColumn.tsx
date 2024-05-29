@@ -30,15 +30,22 @@ const StatusTaskColumn = ({ tasks, status }: StatusTaskColumnProps) => {
   //const backgroundColor = selectBackgroundColor(isActive, canDrop);
 
   return (
-    <div ref={drop} className='col-span-4 md:grid-cols-12 border'style={{ backgroundColor: selectBackgroundColor(isActive) }}>
-      <div className='border-b py-3 text-center bg-white'>
+    <div
+      ref={drop}
+      className='col-span-4 md:grid-cols-12 border'
+      style={{ backgroundColor: selectBackgroundColor(isActive) }}
+    >
+      <div
+        className='border-b py-3 text-center bg-white'
+        style={{ backgroundColor: selectBackgroundColor(isActive) }}
+      >
         <h3 className='text-xl'>{status[0].toUpperCase() + status.slice(1)}</h3>
       </div>
-      
-        {tasks &&
-          tasks.map((task, id) => {
-            return <TaskItem key={task.title + id} task={task} />;
-          })}
+
+      {tasks &&
+        tasks.map((task, id) => {
+          return <TaskItem key={task.title + id} task={task} />;
+        })}
     </div>
   );
 };

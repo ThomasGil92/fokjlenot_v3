@@ -4,17 +4,20 @@ import { User } from "@/adapters/secondary/user/user";
 
 //Interface du state du store
 export interface AppState {
+  global: {
+    loading: boolean;
+    loading_message?: string;
+    error?: string;
+  };
   auth: {
     isAuth: boolean;
     access_token: string | null;
     loading: boolean;
-    user: User|null;
+    user: User | null;
   };
   projects: {
     list: Project[];
     selected: Project | null;
-    loading: boolean;
-    error: string | undefined;
   };
-  tasks: { list: Task[]; loading: boolean; error: string | undefined };
+  tasks: { list: Task[] };
 }

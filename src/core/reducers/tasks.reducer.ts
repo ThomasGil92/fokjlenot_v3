@@ -6,9 +6,6 @@ import { updateTask } from "../use-cases/tasks/updateTask";
 
 const initialState: AppState["tasks"] = {
   list: [],
-
-  loading: false,
-  error: undefined,
 };
 
 export const tasksReducer = createReducer(initialState, (builder) => {
@@ -37,7 +34,5 @@ export const tasksReducer = createReducer(initialState, (builder) => {
         loading: false,
       };
     })
-    .addCase(updateTask.pending, (state) => {
-      state.loading = true;
-    });
+    
 });

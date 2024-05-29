@@ -11,7 +11,7 @@ import LoadingSpinner from "./LoadingSpinner";
 const Layout = () => {
   const dispatch = useAppDispatch();
   const isLogged=useAppSelector(state=>state.auth.isAuth)
-   const loading = useAppSelector((state) => state.tasks.loading);
+   const loading = useAppSelector((state) => state.global.loading);
   useEffect(() => {
     dispatch(isAuth());
   }, [dispatch,isLogged]);
