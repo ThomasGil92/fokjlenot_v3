@@ -64,6 +64,7 @@ const ProjectsList: React.FC<ProjectListProp> = ({ projects }) => {
           <DialogTrigger asChild className='p-3 text-center'>
             <Button
               data-testid='addButton'
+              variant={"secondary"}
               className='text-3xl text-center m-0 p-0 w-8 h-8 inline-block leading-8'
             >
               +

@@ -9,7 +9,7 @@ const ProjectsListItem = (project: Project) => {
     <Link
       to={`/project/${project.id}`}
       className={cn(
-        buttonVariants({ variant: "ghost", size: "sm" }),
+        buttonVariants({ variant:"outline", size: "sm" }),
         "justify-start",
       )}
     >

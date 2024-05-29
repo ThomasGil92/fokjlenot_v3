@@ -34,6 +34,10 @@ export const tasksReducer = createReducer(initialState, (builder) => {
       return {
         ...initialState,
         list: state.list.map((task) => (task.id === id ? updatedTask : task)),
+        loading: false,
       };
+    })
+    .addCase(updateTask.pending, (state) => {
+      state.loading = true;
     });
 });

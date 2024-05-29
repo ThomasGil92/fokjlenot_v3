@@ -1,4 +1,5 @@
 import { Task, TaskPriority, TaskStatus } from "@/adapters/secondary/task/task";
+
 import { Badge } from "@/presentation/shadcn/components/ui/badge";
 import { Separator } from "@radix-ui/react-select";
 import PopoverButton from "../shared/PopoverButton";
@@ -14,6 +15,7 @@ interface DropResult {
 const TaskItem = ({ task }: { task: Task }) => {
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.auth.access_token!);
+ 
 
   // const getVariantColor = (status: Task["status"]) => {
   //   if (status === TaskStatus.PENDING) return "pending";
@@ -33,12 +35,14 @@ const TaskItem = ({ task }: { task: Task }) => {
       item: task,
       end(item, monitor) {
         const dropResult = monitor.getDropResult() as DropResult;
+        
         dispatch(
           updateTask({
             token,
             updatedTask: { ...item, status: dropResult.name as TaskStatus },
           }),
         );
+        
       },
       collect: (monitor: DragSourceMonitor) => ({
         opacity: monitor.isDragging() ? 0.4 : 1,
