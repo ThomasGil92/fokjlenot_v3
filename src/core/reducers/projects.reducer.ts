@@ -7,8 +7,6 @@ import { postNewProject } from "../use-cases/projects/postNewProject";
 const initialState: AppState["projects"] = {
   list: [],
   selected: null,
-  loading: false,
-  error: undefined,
 };
 
 export const projectsReducer = createReducer(initialState, (builder) => {
