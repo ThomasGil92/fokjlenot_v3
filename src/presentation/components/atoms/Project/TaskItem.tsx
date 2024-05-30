@@ -107,7 +107,7 @@ const TaskItem = ({ task }: { task: Task }) => {
     [task],
   );
 
-  const UpdateTaskForm = () => {
+  const updateTaskForm = () => {
     return (
       <Form {...form}>
         <form
@@ -116,7 +116,6 @@ const TaskItem = ({ task }: { task: Task }) => {
           className='grid gap-4 py-4'
         >
           <FormField
-            
             name={"title"}
             render={({ field }) => {
               return (
@@ -125,22 +124,24 @@ const TaskItem = ({ task }: { task: Task }) => {
                     <FormLabel htmlFor='title' hidden className='text-right'>
                       Titre
                     </FormLabel>
-                    <FormControl>
-                      <Input autoFocus={false}
+                   {/*  <FormControl> */}
+                      <Input
+                        autoFocus={false}
                         type='text'
                         id='title'
                         placeholder='Titre de la tâche'
                         className='col-start-2 col-span-4'
                         {...field}
+                        {...form.register("title")}
                       />
-                    </FormControl>
+                   {/*  </FormControl> */}
                     <FormMessage />
                   </div>
                 </FormItem>
               );
             }}
           />
-           <FormField
+          <FormField
             name={"description"}
             render={({ field }) => {
               return (
@@ -157,7 +158,7 @@ const TaskItem = ({ task }: { task: Task }) => {
               );
             }}
           />
-         <FormField
+          <FormField
             name='status'
             render={({ field }) => {
               return (
@@ -167,10 +168,9 @@ const TaskItem = ({ task }: { task: Task }) => {
                   </Label>
                   <FormControl>
                     <Select
-                    value={field.value}
+                      value={field.value}
                       name={field.value}
                       onValueChange={field.onChange}
-                      
                     >
                       <SelectTrigger className='col-start-2 col-span-4 border'>
                         <SelectValue
@@ -200,7 +200,6 @@ const TaskItem = ({ task }: { task: Task }) => {
 
           <SheetFooter>
             <Button type='submit'>Save your new task</Button>
-            
           </SheetFooter>
         </form>
       </Form>
@@ -225,8 +224,12 @@ const TaskItem = ({ task }: { task: Task }) => {
                 </div>
               </>
             </DialogTrigger>
-            <DialogContent className='sm:max-w-[425px]' autoFocus={false} >
-              <UpdateTaskForm />
+            <DialogContent onCloseAutoFocus={(e)=>e.preventDefault()}
+              className='sm:max-w-[425px]'
+              
+            >
+              {updateTaskForm()}
+             
             </DialogContent>
           </Dialog>
         )}
