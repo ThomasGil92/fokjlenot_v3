@@ -64,17 +64,17 @@ const SignUpForm = () => {
         message: "Cet email est déja utilisé",
       });
     } else {
-      navigate("/dashboard");
+      navigate("/login");
       form.reset();
     }
   };
 
   const responseMessage = async (googleResponse: CredentialResponse) => {
     await dispatch(signupWithGoogle(googleResponse.credential!));
-    navigate("/dashboard");
+    navigate("/login");
   };
   const errorMessage = () => {
-    console.log("Login fail");
+    console.log("An error has occured");
   };
 
   return (

@@ -14,6 +14,7 @@ export type Project = {
   title: string;
   status: ProjectStatus;
   ownerId: UserId;collaborators?:User[]
+  description?:string
 };
 
 export interface ProjectRetriever {

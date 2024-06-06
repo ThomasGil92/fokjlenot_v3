@@ -1,3 +1,5 @@
+import { useAppSelector } from "@/infra/store/reduxStore";
+import { Label } from "@/presentation/shadcn/components/ui/label";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,43 +14,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 const DashboardNavigation = () => {
-  const components: { title: string; href: string; description: string }[] = [
-    {
-      title: "Alert Dialog",
-      href: "/docs/primitives/alert-dialog",
-      description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-    {
-      title: "Hover Card",
-      href: "/docs/primitives/hover-card",
-      description:
-        "For sighted users to preview content available behind a link.",
-    },
-    {
-      title: "Progress",
-      href: "/docs/primitives/progress",
-      description:
-        "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-    },
-    {
-      title: "Scroll-area",
-      href: "/docs/primitives/scroll-area",
-      description: "Visually or semantically separates content.",
-    },
-    {
-      title: "Tabs",
-      href: "/docs/primitives/tabs",
-      description:
-        "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-    },
-    {
-      title: "Tooltip",
-      href: "/docs/primitives/tooltip",
-      description:
-        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-    },
-  ];
+  const projects=useAppSelector(state=>state.projects.list)
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -69,16 +35,17 @@ const DashboardNavigation = () => {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className='grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] '>
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
+          <NavigationMenuTrigger>Projets</NavigationMenuTrigger>
+          <NavigationMenuContent className="p-0">
+            
+            <ul className='flex flex-col gap-3 p-0 pt-6 pb-2 md:w-[400px] lg:w-[200px] bg-white  m-5 ms-1 rounded-xl shadow-md shadow-slate-400 lg:grid-cols-[.75fr_1fr]'>
+             <p className="px-2 text-sm">ÉLÉMENTS RÉCENTS</p> {projects.slice(0, 4).map((project, id) => (
+                <ListItem className="m-0 rounded-none"
+                  key={id + project.title}
+                  title={project.title}
+                  href={`/project/${project.id}`}
                 >
-                  {component.description}
+                  {project.description}
                 </ListItem>
               ))}
             </ul>

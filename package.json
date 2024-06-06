@@ -4,7 +4,7 @@
   "version": "3.0.0",
   "type": "module",
   "scripts": {
-    "dev": "VITE_ENABLE_MSW=false tsc && vite",
+    "dev": "cross-env VITE_ENABLE_MSW=false VITE_API_BASE_URL='http://localhost:3000/api' && echo $VITE_API_BASE_URL && tsc && vite",
     "build": "VITE_ENABLE_MSW=false tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
@@ -60,6 +60,7 @@
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
