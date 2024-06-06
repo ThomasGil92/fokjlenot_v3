@@ -31,7 +31,7 @@ const NavLinks = () => {
   return (
     <>
       <div className='hidden md:block'>
-        <NavigationMenuList>
+        <NavigationMenuList className="gap-3">
           {isAuth ? (
             <>
               <ActionButton
@@ -48,8 +48,8 @@ const NavLinks = () => {
             </>
           ) : (
             <>
-              <NavigationButton path='/signup' textContent='Sign Up' />
-              <NavigationButton path='/login' textContent='Log In' />
+              <NavigationButton path='/signup' textContent="Créer un compte" variant="secondary" />
+              <NavigationButton path='/login' textContent='Connexion'/>
             </>
           )}
         </NavigationMenuList>

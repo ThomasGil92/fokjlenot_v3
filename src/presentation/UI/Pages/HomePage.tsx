@@ -1,9 +1,10 @@
+import HomePageDemo from "@/presentation/components/organisms/HomePage/HomePageDemo";
 import { Button } from "@/presentation/shadcn/components/ui/button";
 import { NavLink } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <div className='w-4/5 md:w-1/3 text-center mx-auto'>
+    <><div className='w-4/5 md:w-1/3 text-center mx-auto'>
       <h1 className='font-semibold text-3xl md:text-5xl leading-9 text-blue-gradient'>
         Gérez votre temps
       </h1>
@@ -21,10 +22,9 @@ const HomePage = () => {
       >
         <NavLink to='/login'>Démarrer un projet</NavLink>
       </Button>
-      {/* <h1 className='font-semibold text-3xl leading-9'>
-        Gestionnaire de projet personnalisable pour une expérience sur mesure.
-      </h1> */}
+      
     </div>
+    <HomePageDemo/></>
   );
 };
 
