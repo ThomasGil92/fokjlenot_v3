@@ -9,12 +9,53 @@ import {
 } from "@/presentation/shadcn/components/ui/navigation-menu";
 import { Separator } from "@/presentation/shadcn/components/ui/separator";
 import { cn } from "@/presentation/shadcn/lib/utils";
-import React from "react";
-import AddProjectFormFields from "./AddProjectFormFields";
-import AddTaskForProject from "./AddTaskForProject";
+import React, { useEffect, useState } from "react";
+import AddProjectFormFields from "../../molecules/Layout/AddProjectFormFields";
+import AddTaskForProject from "../../molecules/Layout/AddTaskForProject";
+import { Task, TaskStatus } from "@/adapters/secondary/task/task";
 
 const DashboardNavigation = () => {
-  const projects = useAppSelector((state) => state.projects.list);
+  const projects = useAppSelector((state) => state.projects.list || []);
+
+  const [allTasks, setAllTasks] = useState<Task[]>([]);
+  useEffect(() => {
+    const tasks: Task[] = [];
+    projects.forEach((project) => {
+      if (project.tasks) {
+        tasks.push(...project.tasks);
+      }
+    });
+    setAllTasks(tasks);
+  }, [projects]);
+
+  const FilteredByStatusTasks = ({
+    status,
+    tasks,
+  }: {
+    status: string;
+    tasks: Task[];
+  }) => {
+    const filteredTasks = tasks.filter((task) => task.status === status);
+    if (filteredTasks.length > 0)
+      return (
+        <>
+          <p className='px-2 text-sm'>{status}</p>
+          <Separator />
+          {filteredTasks.map((task) => {
+            return (
+              <ListItem
+                title={task.title}
+                key={task.id}
+                href={`/project/${task.projectId}`}
+              >
+                {task.description}
+              </ListItem>
+            );
+          })}
+        </>
+      );
+  };
+
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -22,15 +63,15 @@ const DashboardNavigation = () => {
           <NavigationMenuTrigger>Vos tâches</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className='flex flex-col gap-3 pt-6 md:w-[400px] lg:w-[200px] bg-white border-slate-100 border-2 m-5 ms-1 rounded-3xl shadow-md shadow-slate-400 lg:grid-cols-[.75fr_1fr]'>
-              <ListItem href='/docs' title='Introduction'>
-                Re-usable components built using Radix UI and Tailwind CSS.
-              </ListItem>
-              <ListItem href='/docs/installation' title='Installation'>
-                How to install dependencies and structure your app.
-              </ListItem>
-              <ListItem href='/docs/primitives/typography' title='Typography'>
-                Styles for headings, paragraphs, lists...etc
-              </ListItem>
+              {Object.values(TaskStatus).map((status, id) => {
+                return (
+                  <FilteredByStatusTasks
+                    status={status}
+                    key={id}
+                    tasks={allTasks}
+                  />
+                );
+              })}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -55,7 +96,7 @@ const DashboardNavigation = () => {
               <NavigationMenuLink href='/dashboard' className='mx-2'>
                 Afficher tous les projets
               </NavigationMenuLink>
-              <AddProjectFormFields >
+              <AddProjectFormFields>
                 <p data-testid='addButton' className='text-left mx-2'>
                   Créer un projet
                 </p>
@@ -63,8 +104,8 @@ const DashboardNavigation = () => {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem >
-          <AddTaskForProject/>
+        <NavigationMenuItem>
+          <AddTaskForProject />
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

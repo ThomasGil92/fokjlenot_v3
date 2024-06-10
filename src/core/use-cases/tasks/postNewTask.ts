@@ -6,7 +6,7 @@ import { dbTasksRetriever } from "@/adapters/secondary/task/dbTasksRetriever";
 
 export const postNewTask = createAppAsyncThunk<
   Task,
-  { token: Token["access_token"]; newTask: Partial<Task> }
+  { token: Token["access_token"]; newTask: Task }
 >("postNewtask", async ({ token, newTask }) => {
   console.log(newTask)
   const new_task_list = await tasksGateway(

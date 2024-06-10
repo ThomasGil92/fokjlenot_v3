@@ -11,14 +11,14 @@ const initialState: AppState["projects"] = {
 
 export const projectsReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(getProjectsListByUserId.fulfilled, (_, action) => {
-      return { ...initialState, list: action.payload };
+    .addCase(getProjectsListByUserId.fulfilled, (state, action) => {
+      return { ...state, list: action.payload };
     })
     .addCase(getProjectsListByUserId.rejected, (_, action) => {
       return { ...initialState, error: action.error.message };
     })
-    .addCase(getProjectById.fulfilled, (_, action) => {
-      return { ...initialState, selected: action.payload.project };
+    .addCase(getProjectById.fulfilled, (state, action) => {
+      return { ...state, selected: action.payload.project };
     })
     .addCase(getProjectById.rejected, (_, action) => {
       return { ...initialState, error: action.error.message };

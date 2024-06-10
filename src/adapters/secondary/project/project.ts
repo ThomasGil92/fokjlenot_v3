@@ -1,5 +1,6 @@
 import { Token } from "@/core/use-cases/auth/auth";
 import { User } from "../user/user";
+import { Task } from "../task/task";
 
 export enum ProjectStatus {
   PENDING = "pending",
@@ -15,6 +16,7 @@ export type Project = {
   status: ProjectStatus;
   ownerId: UserId;collaborators?:User[]
   description?:string
+  tasks?:Task[]
 };
 
 export interface ProjectRetriever {

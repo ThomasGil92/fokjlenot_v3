@@ -2,20 +2,12 @@
 import { Card } from "@/presentation/shadcn/components/ui/card";
 import ProjectsListCardHeader from "../../atoms/Dashboard/ProjectsListCardHeader";
 import ProjectsList from "../../molecules/Dashboard/ProjectsList";
-import { useEffect } from "react";
 
-import { useAppDispatch, useAppSelector } from "@/infra/store/reduxStore";
-import { getProjectsListByUserId } from "@/core/use-cases/projects/getProjectListByUserId";
+import { useAppSelector } from "@/infra/store/reduxStore";
 
 const ProjectsMenu = () => {
-  const dispatch = useAppDispatch();
   const { list: projects } = useAppSelector((state) => state.projects);
   const loading = useAppSelector((state) => state.global.loading);
-  const token = useAppSelector((state) => state.auth.access_token!);
-  const userId = useAppSelector((state) => state.auth.user!.id);
-  useEffect(() => {
-    dispatch(getProjectsListByUserId({ token, userId }));
-  }, []);
 
   return (
     <>

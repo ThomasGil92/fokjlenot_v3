@@ -2,7 +2,7 @@ import { CardContent } from "@/presentation/shadcn/components/ui/card";
 import ProjectsListItem from "../../atoms/Dashboard/ProjectsListItem";
 
 import { Project } from "@/adapters/secondary/project/project";
-import AddProjectFormFields from "./AddProjectFormFields";
+import AddProjectFormFields from "../Layout/AddProjectFormFields";
 
 
 interface ProjectListProp {
