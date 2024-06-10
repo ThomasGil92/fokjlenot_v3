@@ -1,5 +1,4 @@
 import { useAppSelector } from "@/infra/store/reduxStore";
-import { Label } from "@/presentation/shadcn/components/ui/label";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -7,14 +6,15 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/presentation/shadcn/components/ui/navigation-menu";
+import { Separator } from "@/presentation/shadcn/components/ui/separator";
 import { cn } from "@/presentation/shadcn/lib/utils";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import AddProjectFormFields from "./AddProjectFormFields";
+import AddTaskForProject from "./AddTaskForProject";
 
 const DashboardNavigation = () => {
-  const projects=useAppSelector(state=>state.projects.list)
+  const projects = useAppSelector((state) => state.projects.list);
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -36,11 +36,14 @@ const DashboardNavigation = () => {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Projets</NavigationMenuTrigger>
-          <NavigationMenuContent className="p-0">
-            
+          <NavigationMenuContent className='p-0'>
             <ul className='flex flex-col gap-3 p-0 pt-6 pb-2 md:w-[400px] lg:w-[200px] bg-white  m-5 ms-1 rounded-xl shadow-md shadow-slate-400 lg:grid-cols-[.75fr_1fr]'>
-             <p className="px-2 text-sm">ÉLÉMENTS RÉCENTS</p> {projects.slice(0, 4).map((project, id) => (
-                <ListItem className="m-0 rounded-none"
+              <p className='px-2 text-xs font-semibold text-secondary-foreground'>
+                ÉLÉMENTS RÉCENTS
+              </p>
+              {projects.slice(0, 4).map((project, id) => (
+                <ListItem
+                  className='m-0 rounded-none'
                   key={id + project.title}
                   title={project.title}
                   href={`/project/${project.id}`}
@@ -48,15 +51,20 @@ const DashboardNavigation = () => {
                   {project.description}
                 </ListItem>
               ))}
+              <Separator className='my-2' />
+              <NavigationMenuLink href='/dashboard' className='mx-2'>
+                Afficher tous les projets
+              </NavigationMenuLink>
+              <AddProjectFormFields >
+                <p data-testid='addButton' className='text-left mx-2'>
+                  Créer un projet
+                </p>
+              </AddProjectFormFields>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavLink to='/docs'>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Documentation
-            </NavigationMenuLink>
-          </NavLink>
+        <NavigationMenuItem >
+          <AddTaskForProject/>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
