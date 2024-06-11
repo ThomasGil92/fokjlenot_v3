@@ -11,6 +11,7 @@ import HomePage from "../UI/Pages/HomePage";
 //  import HomePage from "@/presentation/UI/Pages/HomePage";
 import DashboardPage from "../UI/Pages/DashboardPage";
 import ProjectPage from "../UI/Pages/ProjectPage";
+import ProjectsPage from "../UI/Pages/ProjectsPage";
 //  import ProtectedRoutes from "./ProtectedRoutes";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -27,6 +28,7 @@ export const routesConfig = [
         //loader: tokenToStoreLoader,
         children: [
           { path: "/dashboard", element: <DashboardPage /> },
+          { path: "/projects", element: <ProjectsPage /> },
           {
             path: "/project/:id",
             element: <ProjectPage />,

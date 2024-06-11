@@ -62,7 +62,7 @@ const DashboardNavigation = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Vos tâches</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className='flex flex-col gap-3 pt-6 md:w-[400px] lg:w-[200px] bg-white border-slate-100 border-2 m-5 ms-1 rounded-3xl shadow-md shadow-slate-400 lg:grid-cols-[.75fr_1fr]'>
+            <ul className='flex flex-col gap-3 pt-3 md:w-[400px] lg:w-[200px] bg-white border-slate-100 border-2 m-5 ms-1 rounded-xl shadow-md shadow-slate-400 lg:grid-cols-[.75fr_1fr]'>
               {Object.values(TaskStatus).map((status, id) => {
                 return (
                   <FilteredByStatusTasks
@@ -93,11 +93,17 @@ const DashboardNavigation = () => {
                 </ListItem>
               ))}
               <Separator className='my-2' />
-              <NavigationMenuLink href='/dashboard' className='mx-2'>
+              <NavigationMenuLink
+                href='/projects'
+                className='hover:bg-secondary  p-2'
+              >
                 Afficher tous les projets
               </NavigationMenuLink>
               <AddProjectFormFields>
-                <p data-testid='addButton' className='text-left mx-2'>
+                <p
+                  data-testid='addButton '
+                  className='text-left pointer cursor-pointer hover:bg-secondary  p-2'
+                >
                   Créer un projet
                 </p>
               </AddProjectFormFields>

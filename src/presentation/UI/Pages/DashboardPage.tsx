@@ -10,6 +10,7 @@ const DashboardPage = () => {
   const userId = useAppSelector((state) => state.auth.user!.id);
   useEffect(() => {
     dispatch(getProjectsListByUserId({ token, userId }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
