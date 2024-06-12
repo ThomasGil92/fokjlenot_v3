@@ -45,7 +45,6 @@ const PopoverButton = ({
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    
     dispatch(
       updateTask({
         token,
@@ -57,7 +56,7 @@ const PopoverButton = ({
 
   return (
     <Popover modal={true} open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild onClick={()=>setOpen(true)}>
+      <PopoverTrigger asChild onClick={() => setOpen(true)}>
         <Button variant={"ghost"} className={`p-0 m-0 hover:bg-transparent`}>
           {children}
         </Button>
