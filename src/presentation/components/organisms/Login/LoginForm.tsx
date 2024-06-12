@@ -51,17 +51,11 @@ export function LoginForm() {
   };
 
   const responseMessage = async (googleResponse: CredentialResponse) => {
-    /* //const credentials = jwtDecode(googleResponse.credential!);
-
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/auth/signin/google`,
-      { token: googleResponse.credential! },
-    );
-    console.log(response); */ try {
+    try {
       await dispatch(loginWithGoogle(googleResponse.credential!));
       navigate("/dashboard");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   const errorMessage = () => {

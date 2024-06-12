@@ -36,5 +36,6 @@ export interface ProjectRetriever {
   deleteProjectsById: (
     token: Token["access_token"] | null,
     projectsToDeleteIds: Project["id"][],
-  ) => Promise<unknown>;
+    userId:User["id"]
+  ) => Promise<Project[]>;
 }

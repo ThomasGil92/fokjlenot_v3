@@ -25,7 +25,7 @@ import {
 } from "@/presentation/shadcn/components/ui/select";
 import { z } from "zod";
 import { TaskStatus } from "@/adapters/secondary/task/task";
-import {  useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -40,7 +40,7 @@ import { postNewTask } from "@/core/use-cases/tasks/postNewTask";
 import { useState } from "react";
 
 const ProjectCardHeader = () => {
-  const [open,setOpen]=useState(false)
+  const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.auth.access_token!);
   const selected = useAppSelector((state) => state.projects.selected);
@@ -61,12 +61,10 @@ const ProjectCardHeader = () => {
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    
-
     const newTask = { ...values, projectId: selected?.id };
-    console.log(newTask)
+
     await dispatch(postNewTask({ token, newTask }));
-setOpen(false)
+    setOpen(false);
     form.reset();
   };
 
@@ -83,7 +81,7 @@ setOpen(false)
                 Add task
               </Button>
             </SheetTrigger>
-            <SheetContent side={"left"} className="w-full md:w-3/4">
+            <SheetContent side={"left"} className='w-full md:w-3/4'>
               <SheetHeader>
                 <SheetTitle>Add a task</SheetTitle>
                 <SheetDescription>
@@ -98,7 +96,7 @@ setOpen(false)
                   className='grid gap-4 py-4'
                 >
                   <FormField
-                  /*   control={form.control} */
+                    /*   control={form.control} */
                     name={"title"}
                     render={({ field }) => {
                       return (
@@ -182,7 +180,7 @@ setOpen(false)
 
                   <SheetFooter>
                     {/* <SheetClose asChild> */}
-                      <Button type='submit'>Save your new task</Button>
+                    <Button type='submit'>Save your new task</Button>
                     {/* </SheetClose> */}
                   </SheetFooter>
                 </form>

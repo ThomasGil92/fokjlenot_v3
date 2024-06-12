@@ -68,13 +68,13 @@ export const dbProjectRetriever = (): ProjectRetriever => {
     },
     deleteProjectsById: async (
       token: Token["access_token"] | null,
-      projectsToDeleteIds: Project["id"][],
+      projectsToDeleteIds: Project["id"][],userId:UserId
     ) => {
       try {
         const response = await axios.delete(
           `${import.meta.env.VITE_API_BASE_URL}/project/many`,
           {
-            data: projectsToDeleteIds,
+            data: {projectsToDeleteIds,userId},
             headers: { Authorization: `Bearer ${token}` },
           },
         );

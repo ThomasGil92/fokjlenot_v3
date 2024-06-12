@@ -74,7 +74,6 @@ const AddProjectFormFields = ({ children }: { children?: ReactNode }) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     dispatch(postNewProject({ token, newProject: values }));
     setOpen(false);
     form.reset();

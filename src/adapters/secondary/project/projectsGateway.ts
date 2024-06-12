@@ -1,5 +1,6 @@
 import { Token } from "@/core/use-cases/auth/auth";
 import { Project, ProjectRetriever, UserId } from "./project";
+import { User } from "../user/user";
 
 export const projectsGateway = (projectRetriever: ProjectRetriever) => {
   /* const filteredProjectsById = (
@@ -40,9 +41,9 @@ export const projectsGateway = (projectRetriever: ProjectRetriever) => {
     },
     deleteProjectsByIds: async (
       token: Token["access_token"] | null,
-      projectsToDeleteIds: Project["id"][],
+      projectsToDeleteIds: Project["id"][],userId:User["id"]
     ) => {
-      const response = await projectRetriever.deleteProjectsById(token, projectsToDeleteIds);
+      const response = await projectRetriever.deleteProjectsById(token, projectsToDeleteIds,userId);
       return response;
     },
   };

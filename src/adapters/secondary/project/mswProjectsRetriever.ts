@@ -2,7 +2,7 @@ import axios from "axios";
 import { Token } from "@/core/use-cases/auth/auth";
 import { Project, ProjectRetriever } from "./project";
 
-export const mswProjectRetriever = (): ProjectRetriever => {
+export const mswProjectRetriever = (): Partial<ProjectRetriever> => {
   return {
     getProjectsListByUserId: async (token: Token["access_token"] | null) => {
       try {

@@ -3,6 +3,7 @@ import { createReducer } from "@reduxjs/toolkit";
 import { getProjectsListByUserId } from "../use-cases/projects/getProjectListByUserId";
 import { getProjectById } from "../use-cases/projects/getProjectById";
 import { postNewProject } from "../use-cases/projects/postNewProject";
+import { deleteManyProjectsById } from "../use-cases/projects/deleteManyProjectsById";
 
 const initialState: AppState["projects"] = {
   list: [],
@@ -28,5 +29,7 @@ export const projectsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(postNewProject.fulfilled, (state, action) => {
       return { ...initialState, list: [...state.list,action.payload] };
-    });
+    }).addCase(deleteManyProjectsById.fulfilled,(state,action)=>{
+      return {...state,list:[...action.payload]}
+    })
 });

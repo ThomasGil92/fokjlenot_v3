@@ -8,9 +8,9 @@ export const postNewTask = createAppAsyncThunk<
   Task,
   { token: Token["access_token"]; newTask: Task }
 >("postNewtask", async ({ token, newTask }) => {
-  console.log(newTask)
-  const new_task_list = await tasksGateway(
-    dbTasksRetriever(),
-  ).postNewTask(token, newTask);
+  const new_task_list = await tasksGateway(dbTasksRetriever()).postNewTask(
+    token,
+    newTask,
+  );
   return new_task_list;
 });

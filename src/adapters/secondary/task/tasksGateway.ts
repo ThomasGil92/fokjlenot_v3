@@ -18,7 +18,7 @@ export const tasksGateway = (tasksRetriever: tasksRetriever) => {
       newTask: Partial<Task>,
     ) => {
       const response = await tasksRetriever.postNewTask(token, newTask);
-      console.log(response);
+
       return response;
     },
     updateTaskStatus: async (

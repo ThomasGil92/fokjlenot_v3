@@ -63,7 +63,7 @@ const DashboardNavigation = () => {
           <NavigationMenuTrigger>Vos tâches</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className='flex flex-col gap-3 pt-3 md:w-[400px] lg:w-[200px] bg-white border-slate-100 border-2 m-5 ms-1 rounded-xl shadow-md shadow-slate-400 lg:grid-cols-[.75fr_1fr]'>
-              {Object.values(TaskStatus).map((status, id) => {
+              {allTasks.length>0?Object.values(TaskStatus).map((status, id) => {
                 return (
                   <FilteredByStatusTasks
                     status={status}
@@ -71,7 +71,7 @@ const DashboardNavigation = () => {
                     tasks={allTasks}
                   />
                 );
-              })}
+              }):<p className="p-3">Aucunes tâches en cours</p>}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -80,7 +80,7 @@ const DashboardNavigation = () => {
           <NavigationMenuContent className='p-0'>
             <ul className='flex flex-col gap-3 p-0 pt-6 pb-2 md:w-[400px] lg:w-[200px] bg-white  m-5 ms-1 rounded-xl shadow-md shadow-slate-400 lg:grid-cols-[.75fr_1fr]'>
               <p className='px-2 text-xs font-semibold text-secondary-foreground'>
-                ÉLÉMENTS RÉCENTS
+                {projects.length>0?"ÉLÉMENTS RÉCENTS":"Aucun projet en cours"}
               </p>
               {projects.slice(0, 4).map((project, id) => (
                 <ListItem

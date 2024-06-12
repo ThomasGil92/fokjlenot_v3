@@ -46,8 +46,9 @@ function ProjectsTable<TData extends TableData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const dispatch=useAppDispatch()
-  const token=useAppSelector(state=>state.auth.access_token!)
+  const dispatch = useAppDispatch();
+  const token = useAppSelector((state) => state.auth.access_token!);
+  const userId = useAppSelector((state) => state.auth.user!.id);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -72,7 +73,7 @@ function ProjectsTable<TData extends TableData, TValue>({
     },
   });
 
-  const deleteProjects = () => {
+  const deleteProjects = async () => {
     const selectedRows = table.getSelectedRowModel();
     const originalRows = selectedRows.rows.map((row) => {
       return row.original;
@@ -82,8 +83,12 @@ function ProjectsTable<TData extends TableData, TValue>({
       return { ...rest, status: état, title: nom };
     });
     const projectsToDeleteIds = projectsToDelete.map((project) => project.id);
-    console.log(projectsToDeleteIds);
-    dispatch(deleteManyProjectsById({token,projectsToDeleteIds}))
+    try {
+      dispatch(deleteManyProjectsById({ token, projectsToDeleteIds, userId }));
+      setRowSelection({});
+    } catch (err) {
+      throw new Error(err as string);
+    }
   };
 
   return (
@@ -180,7 +185,7 @@ function ProjectsTable<TData extends TableData, TValue>({
                   colSpan={columns.length}
                   className='h-24 text-center'
                 >
-                  No results.
+                  Aucun projet en cours.
                 </TableCell>
               </TableRow>
             )}
@@ -189,8 +194,13 @@ function ProjectsTable<TData extends TableData, TValue>({
       </div>
       <div className='flex items-center justify-end space-x-2 py-4'>
         <div className='flex-1 text-sm text-muted-foreground'>
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} projet(s) sélectionné(s).
+          {table.getFilteredRowModel().rows.length > 0 && (
+            <>
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} projet(s)
+              sélectionné(s).
+            </>
+          )}
         </div>
         <div className='space-x-2'>
           <Button
