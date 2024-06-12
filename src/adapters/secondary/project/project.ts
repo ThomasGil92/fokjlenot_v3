@@ -14,9 +14,10 @@ export type Project = {
   id?: string;
   title: string;
   status: ProjectStatus;
-  ownerId: UserId;collaborators?:User[]
-  description?:string
-  tasks?:Task[]
+  ownerId: UserId;
+  collaborators?: User[];
+  description?: string;
+  tasks?: Task[];
 };
 
 export interface ProjectRetriever {
@@ -32,4 +33,8 @@ export interface ProjectRetriever {
     token: Token["access_token"] | null,
     newProject: Project,
   ) => Promise<Project>;
+  deleteProjectsById: (
+    token: Token["access_token"] | null,
+    projectsToDeleteIds: Project["id"][],
+  ) => Promise<unknown>;
 }

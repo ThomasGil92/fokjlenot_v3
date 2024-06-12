@@ -15,11 +15,10 @@ export const dbProjectRetriever = (): ProjectRetriever => {
             headers: { Authorization: `Bearer ${token}` },
           },
         );
-        
+
         return response.data;
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          
           throw new Error(error.response?.statusText);
         }
       }
@@ -52,11 +51,30 @@ export const dbProjectRetriever = (): ProjectRetriever => {
           ...newProject,
           status: newProject.status.toUpperCase() as ProjectStatus,
         };
-        console.log(newProject)
+        console.log(newProject);
         const response = await axios.post(
           `${import.meta.env.VITE_API_BASE_URL}/project`,
           newProject,
           {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          throw new Error(error.response?.statusText);
+        }
+      }
+    },
+    deleteProjectsById: async (
+      token: Token["access_token"] | null,
+      projectsToDeleteIds: Project["id"][],
+    ) => {
+      try {
+        const response = await axios.delete(
+          `${import.meta.env.VITE_API_BASE_URL}/project/many`,
+          {
+            data: projectsToDeleteIds,
             headers: { Authorization: `Bearer ${token}` },
           },
         );

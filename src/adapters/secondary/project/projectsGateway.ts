@@ -38,5 +38,12 @@ export const projectsGateway = (projectRetriever: ProjectRetriever) => {
       const response = await projectRetriever.postNewProject(token, newProject);
       return response;
     },
+    deleteProjectsByIds: async (
+      token: Token["access_token"] | null,
+      projectsToDeleteIds: Project["id"][],
+    ) => {
+      const response = await projectRetriever.deleteProjectsById(token, projectsToDeleteIds);
+      return response;
+    },
   };
 };

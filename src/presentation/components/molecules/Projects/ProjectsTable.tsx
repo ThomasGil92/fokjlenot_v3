@@ -30,6 +30,8 @@ import {
 } from "@/presentation/shadcn/components/ui/table";
 import { useState } from "react";
 import { Project } from "@/adapters/secondary/project/project";
+import { useAppDispatch, useAppSelector } from "@/infra/store/reduxStore";
+import { deleteManyProjectsById } from "@/core/use-cases/projects/deleteManyProjectsById";
 
 export interface TableData extends Project {
   état: string;
@@ -44,6 +46,8 @@ function ProjectsTable<TData extends TableData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const dispatch=useAppDispatch()
+  const token=useAppSelector(state=>state.auth.access_token!)
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -73,12 +77,13 @@ function ProjectsTable<TData extends TableData, TValue>({
     const originalRows = selectedRows.rows.map((row) => {
       return row.original;
     });
-    console.log(originalRows);
     const projectsToDelete: Project[] = originalRows.map((project) => {
       const { état, nom, ...rest } = project;
       return { ...rest, status: état, title: nom };
     });
-    console.log(projectsToDelete);
+    const projectsToDeleteIds = projectsToDelete.map((project) => project.id);
+    console.log(projectsToDeleteIds);
+    dispatch(deleteManyProjectsById({token,projectsToDeleteIds}))
   };
 
   return (
@@ -92,39 +97,45 @@ function ProjectsTable<TData extends TableData, TValue>({
           }
           className='max-w-sm'
         />
-        <Button
-          className='ml-auto mr-2'
-          variant='destructive'
-          onClick={deleteProjects}
-        >
-          Supprimer {Object.keys(rowSelection).length} élément(s)
-        </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='outline' className=''>
-              Colonnes <ChevronDown className='ml-2 h-4 w-4' />
+        <div className='ml-auto'>
+          {Object.keys(rowSelection).length !== 0 && (
+            <Button
+              className='mr-2'
+              variant='destructive'
+              disabled={Object.keys(rowSelection).length === 0}
+              onClick={deleteProjects}
+            >
+              Supprimer {Object.keys(rowSelection).length} élément(s)
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className='capitalize'
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+          )}
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='outline' className=''>
+                Colonnes <ChevronDown className='ml-2 h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className='capitalize'
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div className='rounded-md border'>
         <Table>
